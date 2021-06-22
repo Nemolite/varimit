@@ -70,4 +70,12 @@ function register_menu_for_varimit_submenu_variation() {
       );
   }
 
+  /**
+   * Формируем Значения для вариации
+   */
+
+   function varimit_submenu_variation(){
+      
+   }
+
 ?>
