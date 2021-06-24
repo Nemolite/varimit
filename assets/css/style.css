@@ -1,0 +1,19 @@
+.varimit-output {
+  width: 100%;
+  height: 50px;
+  border: 1px solid red;
+}
+
+.varimit-output p {
+  color: red;
+}
+
+.varimit-output-single-product {
+  width: 70%;
+  height: 50px;
+  border: 1px solid red;
+}
+
+.varimit-output-single-product p {
+  color: red;
+}

@@ -12,6 +12,16 @@
 defined('ABSPATH') || exit;
 
 /**
+ * Подключаем скрипты и стили
+ */
+
+function script_and_style_geo_promo(){
+    wp_enqueue_style( 'varimit-style',  plugins_url('assets/css/style.css', __FILE__));
+    wp_enqueue_script( 'varimit-script', plugins_url('assets/js/script.js', __FILE__), array('jquery'));
+  }
+  add_action( 'wp_enqueue_scripts', 'script_and_style_geo_promo' );
+
+/**
  * Создаем пункт меню в админке "Вариации"
  */
 
@@ -75,7 +85,33 @@ function register_menu_for_varimit_submenu_variation() {
    */
 
    function varimit_submenu_variation(){
+
+    //require "inc/var-admin-form.php";
       
    }
+
+  /**
+  * Вывод вариации в каталоге
+  */
+  add_action( 'woocommerce_after_shop_loop_item','varimit_display_in_category',15 ); 
+  function varimit_display_in_category() {
+    ?>
+        <div class="varimit-output">
+            <p>Еще варианты</p>
+        </div>
+    <?php
+  } 
+
+    /**
+  * Вывод вариации в карточке товара
+  */
+  add_action( 'woocommerce_single_product_summary','varimit_display_in_single_product',15 ); 
+  function varimit_display_in_single_product() {
+    ?>
+        <div class="varimit-output-single-product">
+            <p>Вывод вариаций</p>
+        </div>
+    <?php
+  } 
 
 ?>
