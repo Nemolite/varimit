@@ -21,7 +21,50 @@ function script_and_style_varimit(){
 }
 add_action( 'wp_enqueue_scripts', 'script_and_style_varimit' );
 
+/**
+ * Подключение скриптов и стилей для админки
+ */
 
+function script_and_style_varimit_admin(){
+	wp_enqueue_style( 'varimit-adminatyle',  plugins_url('assets/css/style-admin.css', __FILE__));
+	wp_enqueue_script( 'varimit-adminscript', plugins_url('assets/js/varimit-admin.js', __FILE__),array(),'1.0.0','in_footer');
+
+	wp_localize_script( 'varimit-adminscript', 'myajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+  }
+  add_action( 'admin_enqueue_scripts', 'script_and_style_varimit_admin' );
+
+/**
+ * Создание таблиц при активации плагина
+ */  
+
+register_activation_hook( __FILE__, 'varimit_create_plugin_tables' );
+function varimit_create_plugin_tables()
+{
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'varimit_variation';
+	$sql = "CREATE TABLE $table_name (
+	id int(11) NOT NULL AUTO_INCREMENT,
+	namevari varchar(255) DEFAULT NULL,
+	slugvari varchar(255) DEFAULT NULL,
+	UNIQUE KEY id (id)
+	);";
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+} 
+/**
+ * Модуль создания подменю Вариации
+ */
 require "inc/submenu.php";
+
+/**
+ * Модуль работы с базами данных
+ */
+require "inc/database.php";
+
+/**
+ * Отображение информации в товаре
+ */
+require "inc/product.php";
+
 
 ?>
