@@ -1,6 +1,6 @@
 <?php
 /**
- * Создание подпункта Вариации в пункте Товары
+ * Создание подпункта Вариации в пункте главного меню Товары
  */
 if ( is_admin() ) {
     add_action( 'admin_menu', 'add_products_menu_entry', 100 );
@@ -43,10 +43,12 @@ if ( is_admin() ) {
                 } elseif ( 'сonfigure'==$_GET['varimit_action'] ) {
 
                     /**
-                     * Форма настроки значений вариации
+                     * Форма Настройки (Добавлении) значений вариации
                      * values.php
                      */
-                    varimit_add_variation_value();
+                    $variationid = $_GET['edit'];
+                    $namevari = $_GET['namevari']; 
+                    varimit_add_variation_value( $variationid, $namevari );
 
                 } elseif ( 'delete-value'==$_GET['varimit_action']) {
 
@@ -62,7 +64,8 @@ if ( is_admin() ) {
                      * Редактирование значения вариации
                      * values.php
                      */
-                    varimit_edit_variation_value();
+                    $valueid = $_GET['edit-value'];
+                    varimit_edit_variation_value( $valueid );
 
                 }
  

@@ -45,8 +45,7 @@ function varimit_create_plugin_tables_variation()
 	$sql = "CREATE TABLE $table_name_variation (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	namevari varchar(255) DEFAULT NULL,
-	slugvari varchar(255) DEFAULT NULL,
-	varivalueid varchar(255) DEFAULT NULL,
+	slugvari varchar(255) DEFAULT NULL,	
 	UNIQUE KEY id (id)
 	);";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
@@ -67,6 +66,7 @@ function varimit_create_plugin_tables_variation_values()
 	namevalue varchar(255) DEFAULT NULL,
 	slugvalue varchar(255) DEFAULT NULL,
 	urlvalue varchar(255) DEFAULT NULL,
+	variationid int(11) DEFAULT 0,
 	UNIQUE KEY id (id)
 	);";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );

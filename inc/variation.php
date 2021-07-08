@@ -66,7 +66,36 @@ function varimit_add_variation(){
     
                               </th>                                   
                               <th scope="col">
-                              <a href="<?php echo esc_url( add_query_arg( 'edit', $varimit_variation_output[ $varimit_idx ][ $varimit_id ], 'edit.php?post_type=product&amp;page=variation&amp;varimit_action=сonfigure' ) ); ?>">
+                              <?php 
+                              /**
+                               * Получение списка значений вариации, для конкретной вариации
+                               * Вход id вариации
+                               * Выход массив из названии значений вариации
+                               */
+                              $variation_id_inner = $varimit_variation_output[ $varimit_idx ][ $varimit_id ];
+
+                              $vriation_values_output_arr = apply_filters( 'varimit_variation_values_output_arr', $variation_id_inner );
+                             
+                              $stack = array();
+
+                              foreach ($vriation_values_output_arr as $inner_arr){                                
+                                array_push($stack, $inner_arr['namevalue']);
+                              }
+                             
+                              $list_variation_values = implode(",", $stack);
+
+                              echo $list_variation_values;
+                              echo "<br>";
+                              ?>
+                              <a href="<?php echo esc_url( 
+                                  add_query_arg( 
+                                        [ 'edit'     => $varimit_variation_output[ $varimit_idx ][ $varimit_id ], 
+                                          'namevari' => $varimit_variation_output[ $varimit_idx ][ $varimit_name ] 
+                                        ], 
+                                      'edit.php?post_type=product&amp;page=variation&amp;varimit_action=сonfigure' )
+                                       ); 
+                                       ?>"
+                              >
                                 <?php esc_html_e( 'Настройка значений', 'woocommerce' ); ?>
                               </a>
                               </th>

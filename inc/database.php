@@ -116,6 +116,10 @@ function varimit_action_variation_add_value(){
         $variation_name_value= sanitize_text_field( $_POST['variation_name_value'] );
     }  
 
+    if ( isset( $_POST['variationid'] ) ) {
+        $variationid= sanitize_text_field( $_POST['variationid'] );
+    }  
+
     $urlvalue = "https://belmarco.promo-z.ru/wp-content/uploads/2018/06/Nika-26.06.1-1.png";
  
 	$table_name_values = $wpdb->prefix . 'varimit_variation_values';
@@ -123,7 +127,8 @@ function varimit_action_variation_add_value(){
     $wpdb->insert( $table_name_values, [ 
         'namevalue' => $variation_label_value, 
         'slugvalue' => $variation_name_value,
-        'urlvalue' => $urlvalue
+        'urlvalue' => $urlvalue,
+        'variationid' => $variationid
         ] );
 
     wp_die();
@@ -133,12 +138,12 @@ function varimit_action_variation_add_value(){
 /**
  * Извлечение данных значения вариации из таблицы базы данных вариаций
  */
-add_filter( 'varimit_variation_values_display', 'varimit_variation_values_display_from_db', 10, 1);
-function varimit_variation_values_display_from_db($results) {
+add_filter( 'varimit_variation_values_display', 'varimit_variation_values_display_from_db', 10, 2);
+function varimit_variation_values_display_from_db($results, $variationid) {
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'varimit_variation_values';
-    $results = $wpdb->get_results( 'SELECT * FROM '.$table_name, ARRAY_A );
+    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE variationid = ' . $variationid , ARRAY_A );
     return $results;
 
 }
@@ -164,6 +169,36 @@ function varimit_delete_variation_value() {
 
     return $del_varimit_variation_value;
         wp_die();
+}
+
+/**
+ * Извлечение значений вариации для конкретной вариации
+ */
+add_filter( 'varimit_variation_values_output_arr', 'varimit_variation_values_output_arr_from_db', 10, 1);
+function varimit_variation_values_output_arr_from_db( $variation_id_inner ) {
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+    $results = $wpdb->get_results( 'SELECT namevalue FROM ' . $table_name . ' WHERE variationid = ' . $variation_id_inner , ARRAY_A );
+    return $results;
+
+}
+
+
+
+/**
+ * Извлечение значений вариации для конкретной вариации
+ */
+add_filter( 'varimit_variation_value_output_one_only', 'varimit_variation_value_output_one_only_from_db', 10, 1);
+function varimit_variation_value_output_one_only_from_db( $valueid ) {
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE id = ' . $valueid, ARRAY_A );
+    return $results;
+
 }
 
 
