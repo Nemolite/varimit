@@ -34,27 +34,60 @@ function script_and_style_varimit_admin(){
   add_action( 'admin_enqueue_scripts', 'script_and_style_varimit_admin' );
 
 /**
- * Создание таблиц при активации плагина
+ * Создание таблицы вариации при активации плагина
  */  
 
-register_activation_hook( __FILE__, 'varimit_create_plugin_tables' );
-function varimit_create_plugin_tables()
+register_activation_hook( __FILE__, 'varimit_create_plugin_tables_variation' );
+function varimit_create_plugin_tables_variation()
 {
 	global $wpdb;
-	$table_name = $wpdb->prefix . 'varimit_variation';
-	$sql = "CREATE TABLE $table_name (
+	$table_name_variation = $wpdb->prefix . 'varimit_variation';
+	$sql = "CREATE TABLE $table_name_variation (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	namevari varchar(255) DEFAULT NULL,
 	slugvari varchar(255) DEFAULT NULL,
+	varivalueid varchar(255) DEFAULT NULL,
 	UNIQUE KEY id (id)
 	);";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 } 
+
 /**
- * Модуль создания подменю Вариации
+ * Создание таблицы значений вариации при активации плагина
+ */  
+
+register_activation_hook( __FILE__, 'varimit_create_plugin_tables_variation_values' );
+function varimit_create_plugin_tables_variation_values()
+{
+	global $wpdb;
+	$table_name = $wpdb->prefix . 'varimit_variation_values';
+	$sql = "CREATE TABLE $table_name (
+	id int(11) NOT NULL AUTO_INCREMENT,
+	namevalue varchar(255) DEFAULT NULL,
+	slugvalue varchar(255) DEFAULT NULL,
+	urlvalue varchar(255) DEFAULT NULL,
+	UNIQUE KEY id (id)
+	);";
+	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+	dbDelta( $sql );
+} 
+
+
+/**
+ * Модуль создания подменю вариации
  */
 require "inc/submenu.php";
+
+/**
+ * Модуль работы с вариациями
+ */
+require "inc/variation.php";
+
+/**
+ * Модуль работы со значениями вариации
+ */
+require "inc/values.php";
 
 /**
  * Модуль работы с базами данных
@@ -62,9 +95,8 @@ require "inc/submenu.php";
 require "inc/database.php";
 
 /**
- * Отображение информации в товаре
+ * Модуль отображение информации в товаре
  */
 require "inc/product.php";
-
 
 ?>

@@ -55,8 +55,43 @@
                                                                
                },
               
-           });
-      });
+          });
+     }); 
+ 
+ /**
+ * Добавление значения вариации
+ *
+ * @var {[type]}
+ */
+            
+ 
+  $('#variation_file_value').on('change', function(){ 
+    
+       file = this.files;
+       $('#add_new_variation_value').on('click',{param1: file}, function(event){         
+           
+            let variation_form_value = document.querySelector('#variation_form_value');
+            let getDateFormValue = new FormData(variation_form_value);
+            getDateFormValue.append("action", "variation_add_value");        
+       $.ajax({
+            url:myajax.ajaxurl, 
+            data:getDateFormValue,
+            processData : false,
+            contentType : false, 
+            type:'POST', 
+       success:function(request){
+            alert("Значение вариации добавлена");  
+                                  			            							
+       },
+            error: function( err ) {
+            console.log( err );            	
+       }
+       });
+
+       });
+  });
      
   
 } )( jQuery );
+
+
