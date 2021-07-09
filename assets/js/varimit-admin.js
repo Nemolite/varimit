@@ -20,11 +20,10 @@
               processData : false,
               contentType : false,              
               type:'POST', 
-              success:function(request){ 
-                   
-               setTimeout(function() { location.reload() }, 3000);
-               
-                                                          
+              success:function(request){                
+               alert("Вариация успешно создано");    
+               setTimeout(function() { location.reload() }, 1000);
+                                                 
           },           
   
           });
@@ -51,7 +50,8 @@
                contentType : false,              
                type:'POST',  
                success:function(request){                                                            
-                    alert("Вариация успешно обновлена"); 
+                    alert("Вариация успешно обновлена");
+                    setTimeout(function() { location.reload() }, 1000);  
                                                                
                },
               
@@ -65,7 +65,7 @@
  */
             
  
-  $('#variation_file_value').on('change', function(){ 
+     $('#variation_file_value').on('change', function(){ 
     
        file = this.files;
        $('#add_new_variation_value').on('click',{param1: file}, function(event){         
@@ -73,23 +73,58 @@
             let variation_form_value = document.querySelector('#variation_form_value');
             let getDateFormValue = new FormData(variation_form_value);
             getDateFormValue.append("action", "variation_add_value");        
-       $.ajax({
-            url:myajax.ajaxurl, 
-            data:getDateFormValue,
-            processData : false,
-            contentType : false, 
-            type:'POST', 
-       success:function(request){
-            alert("Значение вариации добавлена");  
-                                  			            							
-       },
-            error: function( err ) {
-            console.log( err );            	
-       }
-       });
+          $.ajax({
+               url:myajax.ajaxurl, 
+               data:getDateFormValue,
+               processData : false,
+               contentType : false, 
+               type:'POST', 
+                    success:function(request){
+                         alert("Значение вариации добавлена");
+                         setTimeout(function() { location.reload() }, 1000);   
+                                                                                                         
+                    },
+                    error: function( err ) {
+                         console.log( err );            	
+                    }
+          });
 
        });
-  });
+     });
+
+     /**
+      * Изменения значения вариации      
+      * 
+      * 
+      */           
+ 
+  $('#variation_value_img').on('change', function(){ 
+    
+     file = this.files;
+     $('#save_variation_value').on('click',{param1: file}, function(event){         
+          
+               let variation_form_value = document.querySelector('#variation-value-form-edit');
+               let getDateFormValue = new FormData(variation_form_value);
+               getDateFormValue.append("action", "variation_edit_value");        
+          $.ajax({
+               url:myajax.ajaxurl, 
+               data:getDateFormValue,
+               processData : false,
+               contentType : false, 
+               type:'POST', 
+
+               success:function(request){
+                    alert("Значение вариации изменено"); 
+                    setTimeout(function() { location.reload() }, 1000); 
+                                                                                                    
+               },
+               error: function( err ) {
+                    console.log( err );            	
+               }
+          });
+
+     });
+  }); 
      
   
 } )( jQuery );

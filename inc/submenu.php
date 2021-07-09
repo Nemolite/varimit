@@ -64,8 +64,8 @@ if ( is_admin() ) {
                      * Редактирование значения вариации
                      * values.php
                      */
-                    $valueid = $_GET['edit-value'];
-                    varimit_edit_variation_value( $valueid );
+                    $valueid = $_GET['edit-value'];                    
+                    varimit_edit_variation_value( $valueid  );
 
                 }
  

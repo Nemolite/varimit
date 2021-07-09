@@ -14,7 +14,7 @@ function varimit_add_new_variation(){
 
     if ( isset( $_POST['variation_label'] ) ) {
         $variation_label = sanitize_text_field( $_POST['variation_label'] );
-    }
+    }    
 
     if ( isset( $_POST['variation_name'] ) ) {
         $variation_name = sanitize_text_field( $_POST['variation_name'] );
@@ -200,6 +200,40 @@ function varimit_variation_value_output_one_only_from_db( $valueid ) {
     return $results;
 
 }
+
+/**
+ * Изменение значения вариации 
+ */
+add_action('wp_ajax_variation_edit_value', 'varimit_action_variation_edit_value'); 
+function varimit_action_variation_edit_value(){ 
+    global $wpdb;
+
+    if ( isset( $_POST['variation_value_label'] ) ) {
+        $variation_value_label = sanitize_text_field( $_POST['variation_value_label'] );
+    }
+
+    if ( isset( $_POST['variation_value_name'] ) ) {
+        $variation_value_name = sanitize_text_field( $_POST['variation_value_name'] );
+    }
+
+    if ( isset( $_POST['save_variation_value_id'] ) ) {
+        $save_variation_value_id = sanitize_text_field( $_POST['save_variation_value_id'] );
+    }
+
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+
+    $num_varimit = $wpdb->update( $table_name, [ 
+        'namevalue' =>  $variation_value_label, 
+        'slugvalue' =>  $variation_value_name
+    ],
+    [ 'id' => $save_variation_value_id ]
+ );
+       
+return $num_varimit;
+    wp_die();
+}
+
 
 
 

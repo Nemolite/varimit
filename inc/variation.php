@@ -82,7 +82,7 @@ function varimit_add_variation(){
                                 array_push($stack, $inner_arr['namevalue']);
                               }
                              
-                              $list_variation_values = implode(",", $stack);
+                              $list_variation_values = implode(" , ", $stack);
 
                               echo $list_variation_values;
                               echo "<br>";

@@ -10,6 +10,13 @@ function varimit_add_variation_value( $variationid, $namevari ) {
     ?>
 
     <h1>Добавление значений вариации <?php echo esc_html( $namevari ); ?></h1>
+
+    <?php echo '<div id="message" class="updated"><p>'         
+        . '</p><p><a href="' 
+        . esc_url( admin_url( 'edit.php?post_type=product&amp;page=variation' ) ) 
+        . '">' 
+        . esc_html__( 'Назад к вариации ', 'varimit' ) . '</a></p></div>';
+	?>
   
     <br class="clear" />
     <div id="col-container">
@@ -46,6 +53,7 @@ function varimit_add_variation_value( $variationid, $namevari ) {
 
                     $varimit_repetitions = ( $varimit_variation_values_output ) ? count( $varimit_variation_values_output ) : 1;
 
+                    if ($varimit_variation_values_output) {
                     ?>
 
                     <?php for ( $varimit_idx = 0; $varimit_idx <= ($varimit_repetitions-1); $varimit_idx++ ) { ?>
@@ -90,6 +98,9 @@ function varimit_add_variation_value( $variationid, $namevari ) {
 
                     <?php
                     }
+                } else {
+                    echo "Значения для вариации ". $namevari ." не создано";
+                }
                     ?>
 
                 </div>
@@ -168,8 +179,6 @@ function varimit_add_variation_value( $variationid, $namevari ) {
  */
 function varimit_edit_variation_value( $valueid ) {
 
-echo $valueid;
-
 /**
  * Получение значения вариации из базы данных
  * Вход id значения вариации $valueid
@@ -177,13 +186,19 @@ echo $valueid;
  */
 $vriation_value_output_one_only = apply_filters( 'varimit_variation_value_output_one_only', $valueid );
 
-echo "<pre>";
-print_r($vriation_value_output_one_only);
-echo "</pre>";
+
 
     ?>
-  <div class="wrap woocommerce">
+  <div class="wrap woocommerce">			
+  
     <h1><?php esc_html_e( 'Изменить значение вариации', 'varimit' ); ?></h1>
+
+    <?php echo '<div id="message" class="updated"><p>'         
+        . '</p><p><a href="' 
+        . esc_url( admin_url( 'edit.php?post_type=product&amp;page=variation' ) ) 
+        . '">' 
+        . esc_html__( 'Назад к значениям вариации ', 'varimit' ) . '</a></p></div>';
+	?>
 	<form action="" name="variation-value-form-edit" id="variation-value-form-edit" method="post">
 					<table class="form-table">
 						<tbody>
@@ -199,7 +214,7 @@ echo "</pre>";
                                         name="variation_value_label" 
                                         id="variation_value_label" 
                                         type="text" 
-                                        value="<?php echo esc_attr( $namevari  ); ?>" 
+                                        value="<?php echo esc_attr( $vriation_value_output_one_only[0]['namevalue']  ); ?>" 
                                     />
 									<p class="description">
                                         <?php esc_html_e( 'Значение вариации будет отображено во front-end', 'varimit' ); ?>
@@ -218,7 +233,7 @@ echo "</pre>";
                                         name="variation_value_name" 
                                         id="variation_value_name" 
                                         type="text" 
-                                        value="<?php echo esc_attr( $slugvari ); ?>" 
+                                        value="<?php echo esc_attr( $vriation_value_output_one_only[0]['slugvalue']  ); ?>" 
                                         maxlength="28" 
                                     />
 									<p class="description">
@@ -229,7 +244,7 @@ echo "</pre>";
 
                             <tr class="form-field form-required">
 								<th scope="row" valign="top">
-									<label for="variation_value_name">
+									<label for="variation_value_img">
                                         <?php esc_html_e( 'Миниатюра', 'varimit' ); ?>
                                     </label>
 								</th>
@@ -251,8 +266,22 @@ echo "</pre>";
 							<?php do_action( 'varimit_after_edit_variation-value_fields' ); ?>
 						</tbody>
 					</table>
-                    <input type="hidden" name="variation_id" id="variation_id" value="<?php echo esc_html( $editid ); ?>">
-					<p class="submit"><button type="submit" name="save_variation" id="submit-variation-edit" class="button-primary" value="<?php esc_attr_e( 'Update', 'woocommerce' ); ?>"><?php esc_html_e( 'Update', 'woocommerce' ); ?></button></p>
+                    <input  
+                        type="hidden" 
+                        name="save_variation_value_id" 
+                        id="save_variation_value_id" 
+                        value="<?php echo esc_html( $valueid ); ?>"
+                    >
+					<p class="submit">
+                        <button 
+                            type="submit" 
+                            name="save_variation_value" 
+                            id="save_variation_value" 
+                            class="button-primary" 
+                            value="<?php esc_attr_e( 'Update', 'woocommerce' ); ?>"
+                        >
+                            <?php esc_html_e( 'Update', 'woocommerce' ); ?></button>
+                    </p>
 					<?php // wp_nonce_field( 'woocommerce-save-attribute_' . $edit ); ?>
 				</form>
 

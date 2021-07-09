@@ -42,12 +42,14 @@ function varimit_create_plugin_tables_variation()
 {
 	global $wpdb;
 	$table_name_variation = $wpdb->prefix . 'varimit_variation';
+	$charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->collate}";
+
 	$sql = "CREATE TABLE $table_name_variation (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	namevari varchar(255) DEFAULT NULL,
 	slugvari varchar(255) DEFAULT NULL,	
 	UNIQUE KEY id (id)
-	);";
+	){$charset_collate};";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 } 
@@ -61,6 +63,8 @@ function varimit_create_plugin_tables_variation_values()
 {
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'varimit_variation_values';
+	$charset_collate = "DEFAULT CHARACTER SET {$wpdb->charset} COLLATE {$wpdb->collate}";
+
 	$sql = "CREATE TABLE $table_name (
 	id int(11) NOT NULL AUTO_INCREMENT,
 	namevalue varchar(255) DEFAULT NULL,
@@ -68,10 +72,17 @@ function varimit_create_plugin_tables_variation_values()
 	urlvalue varchar(255) DEFAULT NULL,
 	variationid int(11) DEFAULT 0,
 	UNIQUE KEY id (id)
-	);";
+	){$charset_collate};";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 } 
+
+
+/**
+ * Удаление таблиц после при деактивации
+ */
+
+ 
 
 
 /**
