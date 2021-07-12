@@ -7,14 +7,24 @@ add_action('woocommerce_product_write_panel_tabs','varimit_output_variation_in_p
 
 function varimit_output_variation_in_product() {
   
+  global $post;
+  $idenvar = $post->ID;  
+  // $metas = get_post_meta( $idenvar,'_varimit_iden',true );  
+  // echo $metas;
   ?>
- 
+  <input type="hidden" 
+         name="idenvar" 
+         id="idenvar" 
+         value="<?php echo esc_html( $idenvar ); ?>"
+  >
+
   <div class="varimit-admin-output-block">
     
     <div class="varimit-admin-output-block-left">
       <p>Вариации</p>
     </div>
     <div class="varimit-admin-output-block-right">
+        
       <div class="varimit-form-check">
 
       <p class="varimit-form-field" id="varimit-iden-num">
@@ -22,13 +32,13 @@ function varimit_output_variation_in_product() {
           <input type="text" 
             class="" 
             style="" 
-            name="iden_num" 
-            id="iden_num" 
-            value="" 
+            name="varimit_variation_iden_num" 
+            id="varimit_variation_iden_num" 
+            value="<?php echo get_post_meta( $idenvar, '_varimit_iden', true ); ?>" 
             placeholder=""
           /> 
        </p>
-
+     
        <label class="form-check-label" for="mainCheckDefault">
           Главный товар в вариации
         </label>
@@ -36,14 +46,13 @@ function varimit_output_variation_in_product() {
         <input
           class="form-check-input"
           name="varimit-main-product-chekbox"
+          id="varimit-main-product-chekbox"
           type="checkbox"
-          value="1"
+          value="<?php echo get_post_meta( $idenvar, '_varimit_main', true ); ?>"
           id="mainCheckDefault"
         />
 
-        <input type="hidden" 
-        name="varimit-main-product-chekbox" 
-        value="0" />
+       
 
        <div class="varimit-table-inner">
          <div class="varimit-table-inner-title">
@@ -87,7 +96,8 @@ function varimit_output_variation_in_product() {
          </div>
        </div>
        
-      </div>     
+      </div> 
+        
     </div> 
   </div>
   <?php

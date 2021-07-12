@@ -5,7 +5,7 @@
  */
 
  /**
-  * Запись в таблицу новых вариаций
+  * Добавление вариаций
   */
 
 add_action('wp_ajax_add_new_variation', 'varimit_add_new_variation'); 
@@ -31,7 +31,7 @@ function varimit_add_new_variation(){
 }
 
 /**
- * Извлечение данных из таблицы базы данных вариаций
+ * Извлечение вариаций
  */
 add_filter( 'varimit_variation_display', 'varimit_variation_display_from_db', 10, 1);
 function varimit_variation_display_from_db($results) {
@@ -44,7 +44,7 @@ function varimit_variation_display_from_db($results) {
 }
 
 /**
- * Редактирование Вариации базы данных 
+ * Редактирование вариации 
  */
 add_action('wp_ajax_edit_variation', 'varimit_action_edit_variation'); 
 function varimit_action_edit_variation(){ 
@@ -77,7 +77,7 @@ return $num_varimit;
 }
 
 /**
- * Удаление Вариации базы данных 
+ * Удаление вариации
  */
 
 function varimit_delete_variation(){ 
@@ -100,8 +100,10 @@ return $del_varimit;
     wp_die();
 }
 
+/******************* Значения вариации ************/
+
 /**
- * Добавление значение вариации в таблицу базы данных
+ * Добавление значение вариации 
  * 
  */
 add_action('wp_ajax_variation_add_value', 'varimit_action_variation_add_value'); 
@@ -136,7 +138,7 @@ function varimit_action_variation_add_value(){
 }
 
 /**
- * Извлечение данных значения вариации из таблицы базы данных вариаций
+ * Извлечение значения вариации 
  */
 add_filter( 'varimit_variation_values_display', 'varimit_variation_values_display_from_db', 10, 2);
 function varimit_variation_values_display_from_db($results, $variationid) {
@@ -188,7 +190,7 @@ function varimit_variation_values_output_arr_from_db( $variation_id_inner ) {
 
 
 /**
- * Извлечение значений вариации для конкретной вариации
+ * Извлечение значений вариации 
  */
 add_filter( 'varimit_variation_value_output_one_only', 'varimit_variation_value_output_one_only_from_db', 10, 1);
 function varimit_variation_value_output_one_only_from_db( $valueid ) {

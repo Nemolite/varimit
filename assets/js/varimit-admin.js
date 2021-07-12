@@ -1,12 +1,7 @@
 ( function( $ ) {
      /**
       * Добавление вариацию в таблицы базы данных
-      *
-      * @param   {[type]}  #submit-variation  [#submit-variation description]
-      * @param   {[type]}  click              [click description]
-      * @param   {[type]}  function           [function description]
-      *
-      * @return  {[type]}                     [return description]
+      *     
       */
     $('#submit-variation').on('click',function(){ 
                         
@@ -31,12 +26,7 @@
 
 /**
  * Редактирование Вариации
- *
- * @param   {[type]}  #submit-variation-edit  [#submit-variation-edit description]
- * @param   {[type]}  click                   [click description]
- * @param   {[type]}  function                [function description]
- *
- * @return  {[type]}                          [return description]
+ * 
  */
      $('#submit-variation-edit').on('click',function(){ 
                         
@@ -61,7 +51,6 @@
  /**
  * Добавление значения вариации
  *
- * @var {[type]}
  */
             
  
@@ -125,7 +114,64 @@
 
      });
   }); 
+
+  /**
+   * Товар в админке
+   * Сохранение идентификатора вариации
+   */
+   $('#varimit_variation_iden_num').on('change', function() { 
+                        
+     let postid = $('#idenvar').val();
+     let iden = $('#varimit_variation_iden_num').val();    
+    
+     let idenData =  {  
+          action: 'varimit_variation_iden_num',   
+          postid: postid,  
+          iden  : iden               
+        };  
+        
+          $.ajax({
+               url:myajax.ajaxurl, 
+               data:idenData,                       
+               type:'POST',  
+               success:function(request){ 
+                         
+                                                            
+               }
+               
+          
+          });
+     });
      
+
+     /**
+   * Товар в админке
+   * выставление главного товара в dfhbfwbb
+   */
+   $('#varimit-main-product-chekbox').on('change', function() { 
+                       
+     let postid = $('#idenvar').val();
+     let main = $('#varimit-main-product-chekbox').val();    
+    
+     let mainData =  {  
+          action: 'varimit_variation_iden_main',   
+          postid: postid,  
+          main  : main               
+        };  
+        
+          $.ajax({
+               url:myajax.ajaxurl, 
+               data:mainData,                       
+               type:'POST',  
+               success:function(request){ 
+                      alert( request );
+                      alert ( "успешно");  
+                                                            
+               }
+               
+          
+          });
+     });
   
 } )( jQuery );
 

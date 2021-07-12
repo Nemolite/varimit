@@ -110,4 +110,9 @@ require "inc/database.php";
  */
 require "inc/product.php";
 
+/**
+ * Модуль работы с произвольными полями продукта
+ */
+require "inc/product_db.php";
+
 ?>
