@@ -32,7 +32,7 @@ function varimit_action_varimit_variation_iden_num(){
 }
 
  /**
- * Добавление и изменения значения xtr,jrcf
+ * Добавление и изменения значения 
  * определение главного товара
  */
 add_action('wp_ajax_varimit_variation_iden_main', 'varimit_action_varimit_variation_iden_main'); 
@@ -45,13 +45,11 @@ function varimit_action_varimit_variation_iden_main(){
     }
 
     if ( isset( $_POST['main'] ) ) {
-        $main = sanitize_text_field( $_POST['main'] );
-        $main = $main?$main:0;
-        echo $main; 
+        $main = sanitize_text_field( $_POST['main'] );      
         $main = strval( $main );                  
     }
     
-    $res = update_post_meta( $postid, '_varimit_main',  $main );
+    update_post_meta( $postid, '_varimit_main',  $main );
 
     
     wp_die();

@@ -11,6 +11,13 @@ function varimit_output_variation_in_product() {
   $idenvar = $post->ID;  
   // $metas = get_post_meta( $idenvar,'_varimit_iden',true );  
   // echo $metas;
+  $check_main = get_post_meta( $idenvar,'_varimit_main',true );  
+  
+  if("1"==$check_main){   
+    $param_chek = "checked";
+  } else {    
+    $param_chek = "";
+  }
   ?>
   <input type="hidden" 
          name="idenvar" 
@@ -48,7 +55,8 @@ function varimit_output_variation_in_product() {
           name="varimit-main-product-chekbox"
           id="varimit-main-product-chekbox"
           type="checkbox"
-          value="<?php echo get_post_meta( $idenvar, '_varimit_main', true ); ?>"
+          value="<?php echo $res_main;?>"
+          <?php echo $param_chek;?>
           id="mainCheckDefault"
         />
 
