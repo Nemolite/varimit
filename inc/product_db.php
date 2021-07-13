@@ -54,4 +54,32 @@ function varimit_action_varimit_variation_iden_main(){
     
     wp_die();
 }
+
+/**
+ * Получение вариации для товара, для выбора
+ */
+add_filter( 'varimit_variation_display_product', 'varimit_variation_display_product_all_from_db', 10, 1);
+function varimit_variation_display_product_all_from_db( $results_data ) {
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'varimit_variation';
+
+    $results_data = $wpdb->get_results( 'SELECT * FROM ' . $table_name, ARRAY_A );
+    return $results_data;
+
+}
+
+/**
+ * Получение значения товара вариации для товара
+ */
+add_filter( 'varimit_variation_values_display_product_all', 'varimit_variation_values_display_product_all_from_db', 10, 1);
+function varimit_variation_values_display_product_all_from_db( $value_id_out ) {
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE variationid = ' . $value_id_out, ARRAY_A );
+    return $results;
+
+}
 ?>

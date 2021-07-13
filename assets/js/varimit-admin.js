@@ -176,6 +176,39 @@
           
           });
      });
+
+       /**
+   * Товар в админке
+   * выборка из select
+   */
+   $('#varimit-main-product-chekbox').on('change', function() { 
+                       
+     let postid = $('#idenvar').val();
+     let main; 
+     
+     if ($('#varimit-main-product-chekbox').is(':checked')){          
+          main = "1";
+     } else {        
+          main = "0";
+     }
+    
+     let mainData =  {  
+          action: 'varimit_variation_iden_main',   
+          postid: postid,  
+          main  : main               
+        };  
+        
+          $.ajax({
+               url:myajax.ajaxurl, 
+               data:mainData,                       
+               type:'POST',  
+               success:function(request){                       
+                                                            
+               }
+               
+          
+          });
+     });
   
 } )( jQuery );
 
