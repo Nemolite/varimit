@@ -146,7 +146,7 @@
 
      /**
    * Товар в админке
-   * выставление главного товара в dfhbfwbb
+   * выставление главного товара 
    */
    $('#varimit-main-product-chekbox').on('change', function() { 
                        
@@ -181,34 +181,40 @@
    * Товар в админке
    * выборка из select
    */
-   $('#varimit-main-product-chekbox').on('change', function() { 
-                       
-     let postid = $('#idenvar').val();
-     let main; 
-     
-     if ($('#varimit-main-product-chekbox').is(':checked')){          
-          main = "1";
-     } else {        
-          main = "0";
-     }
-    
-     let mainData =  {  
-          action: 'varimit_variation_iden_main',   
-          postid: postid,  
-          main  : main               
-        };  
-        
-          $.ajax({
-               url:myajax.ajaxurl, 
-               data:mainData,                       
-               type:'POST',  
-               success:function(request){                       
-                                                            
-               }
-               
-          
+     const valueselect = ( id ) => {      
+          $('#slecet-point-process').on('change', `#select_values_${id}`, function() { 
+               let optionpostid = $('#idenvar').val();
+
+               let valueID = jQuery(`#select_values_${id}`).attr("data-value_id");                                  
+               let optionValueSlug = jQuery(`#option_values_${id}`).attr("value"); 
+               let optionValueName = jQuery(`#option_values_${id}`).attr("data-value");     
+            
+
+              jQuery.ajax({
+                      url: myajax.ajaxurl,
+                      type: 'POST',
+                      data: {
+                          action: 'varimit_select_values',
+                          optionpostid: optionpostid,
+                          value_id: valueID,
+                          option_slug: optionValueSlug,
+                          option_name: optionValueName,
+
+                      },success:function( request ){
+                           alert(request);
+                          setTimeout(jQuery(document.body).trigger('update_cart'),1000);                
+                      } 
+                  });
+  
           });
-     });
+          
+      }     
+      
+      const varimit_value_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
+      for ( let i = 1;i<=varimit_value_index;i++ ) {
+          valueselect( i );        
+        
+      } 
   
 } )( jQuery );
 

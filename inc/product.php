@@ -23,12 +23,19 @@ function varimit_output_variation_in_product() {
          name="idenvar" 
          id="idenvar" 
          value="<?php echo esc_html( $idenvar ); ?>"
-  >
+  > 
 
   <div class="varimit-admin-output-block">
     
     <div class="varimit-admin-output-block-left">
       <p>Вариации</p>
+      <?php
+      $meta_values = get_post_meta( $idenvar, '_varimit__product_value', false );
+
+      echo "<pre>";
+      print_r( $meta_values );
+      echo "</pre>";
+      ?>
     </div>
     <div class="varimit-admin-output-block-right">
         
@@ -84,7 +91,7 @@ function varimit_output_variation_in_product() {
 
            ?>
            
-         <table class="varimit-table-inner-content-table">
+         <table class="varimit-table-inner-content-table" id="slecet-point-process">
   
               <tr>           
                 <th class="varimit-table-inner-content-title">Вариации</th>
@@ -115,7 +122,11 @@ function varimit_output_variation_in_product() {
                         <?php 
                         foreach( $vriation_value_output_select as $key => $arr_ariation_values_list):
                         ?>
-                          <option value="<?php echo esc_attr( $arr_ariation_values_list['slugvalue']  );?>">
+                          <option 
+                            value="<?php echo esc_attr( $arr_ariation_values_list['slugvalue']  );?>"
+                            data-value="<?php echo esc_attr( $arr_ariation_values_list['namevalue']  );?>"
+                            id="option_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
+                          >
                           <?php echo esc_attr( $arr_ariation_values_list['namevalue']  );?>
                         </option>
                         <?php endforeach; ?>
@@ -123,7 +134,12 @@ function varimit_output_variation_in_product() {
                   </td>
                 </tr>
               <?php } ?>
-    
+              <input type="hidden" 
+              name="varimit_value_index" 
+              id="varimit_value_index" 
+              value=""
+              data-index_full="<?php echo esc_html( $varimit_index ); ?>"
+              >
           </table>
 
          </div>
