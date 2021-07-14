@@ -148,12 +148,4 @@ function varimit_output_variation_in_product() {
   </div>
   <?php
 }
-
-/**
- * Создание произвольных полей к товару
- * - Главный товар true/false 
- * - Идентификатор
- */
-
-
 ?>
