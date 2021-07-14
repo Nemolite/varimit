@@ -29,13 +29,7 @@ function varimit_output_variation_in_product() {
     
     <div class="varimit-admin-output-block-left">
       <p>Вариации</p>
-      <?php
-      $meta_values = get_post_meta( $idenvar, '_varimit__product_value', false );
 
-      echo "<pre>";
-      print_r( $meta_values );
-      echo "</pre>";
-      ?>
     </div>
     <div class="varimit-admin-output-block-right">
         
@@ -101,10 +95,6 @@ function varimit_output_variation_in_product() {
 
                         $value_id_out = $varimit_variation_output_product[ $varimit_index ][ $varimit_id ];                         
                         $vriation_value_output_select = apply_filters( 'varimit_variation_values_display_product_all', $value_id_out );
-                        
-                        echo "<pre>";
-                        print_r( $vriation_value_output_select );
-                        echo "</pre>";
 
               ?>
                 <tr>              
@@ -121,11 +111,18 @@ function varimit_output_variation_in_product() {
                       <option value="notselect">-не выбран-</option>
                         <?php 
                         foreach( $vriation_value_output_select as $key => $arr_ariation_values_list):
+                          $req_key_meta = '_varimit__product_value_' . $vriation_value_output_select[0]['variationid'];
+                          $req_meta_values = get_post_meta( $idenvar, $req_key_meta, false );
+                          $selected_value = $req_meta_values[0][1];
+                          echo $selected_value;
+                          echo "<br>";
+                          echo $arr_ariation_values_list['slugvalue']; 
                         ?>
                           <option 
                             value="<?php echo esc_attr( $arr_ariation_values_list['slugvalue']  );?>"
-                            data-value="<?php echo esc_attr( $arr_ariation_values_list['namevalue']  );?>"
-                            id="option_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
+
+                            <?php selected($selected_value, $arr_ariation_values_list['slugvalue']);?>
+                            
                           >
                           <?php echo esc_attr( $arr_ariation_values_list['namevalue']  );?>
                         </option>

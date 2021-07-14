@@ -186,10 +186,9 @@
                let optionpostid = $('#idenvar').val();
 
                let valueID = jQuery(`#select_values_${id}`).attr("data-value_id");                                  
-               let optionValueSlug = jQuery(`#option_values_${id}`).attr("value"); 
-               let optionValueName = jQuery(`#option_values_${id}`).attr("data-value");     
-            
-
+               let optionValueSlug = jQuery(`#select_values_${id}`).val();                
+               let optionValueName = jQuery(`#select_values_${id} option:selected`).text();     
+                          
               jQuery.ajax({
                       url: myajax.ajaxurl,
                       type: 'POST',
@@ -201,8 +200,8 @@
                           option_name: optionValueName,
 
                       },success:function( request ){
-                           alert(request);
-                          setTimeout(jQuery(document.body).trigger('update_cart'),1000);                
+                         
+                         
                       } 
                   });
   
