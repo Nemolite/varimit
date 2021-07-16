@@ -75,19 +75,12 @@ function varimit_create_plugin_tables_variation_values()
 	slugvalue varchar(255) DEFAULT NULL,
 	urlvalue varchar(255) DEFAULT NULL,
 	variationid int(11) DEFAULT 0,
+	prioritet int(11) DEFAULT 0,
 	UNIQUE KEY id (id)
 	){$charset_collate};";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 } 
-
-
-/**
- * Удаление таблиц после при деактивации
- */
-
- 
-
 
 /**
  * Модуль создания подменю вариации

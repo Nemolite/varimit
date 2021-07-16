@@ -56,7 +56,7 @@ if ( is_admin() ) {
                      * Удаление значения вариации
                      * database.php
                      */
-                    varimit_delete_variation_value();
+                    // varimit_delete_variation_value();
 
                 } elseif ( 'edit-value'==$_GET['varimit_action']) {
 

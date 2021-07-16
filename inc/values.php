@@ -40,7 +40,9 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                 </div>
 
                 </div>
-                <div class="varimit-values-content">
+                <div class="varimit-values-content" 
+                data-variationid="<?php echo esc_html($variationid)?>"
+                >
                     <?php 
                     /**
                      * hock varimit_variation_display_from_db -10
@@ -55,7 +57,6 @@ function varimit_add_variation_value( $variationid, $namevari ) {
 
                     if ($varimit_variation_values_output) {
                     ?>
-
                     <?php foreach($varimit_variation_values_output as $varimit_temp_list) { ?>
 
                     <div class="varimit-values-content-item" 
@@ -79,7 +80,16 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                                 </a> | 
                             </span>
                             <span class="delete">
-                                <a class="delete-value" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'delete-value', $varimit_temp_list[ $varimit_value_id ], 'edit.php?post_type=product&amp;page=variation&amp;varimit_action=delete-value' ), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>">
+                                <!--
+                                <a class="delete-value" href="<?php // echo esc_url( wp_nonce_url( add_query_arg( 'delete-value', $varimit_temp_list[ $varimit_value_id ], 'edit.php?post_type=product&amp;page=variation&amp;varimit_action=delete-value' ), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>">
+                                    <?php // esc_html_e( 'Delete', 'woocommerce' ); ?>
+                                </a>
+                                -->
+                                <a href="" 
+                                    class="delete-value"
+                                    data-value_del_id="<?php echo esc_html( $varimit_temp_list[ $varimit_value_id ] ); ?>"
+                                    
+                                >
                                     <?php esc_html_e( 'Delete', 'woocommerce' ); ?>
                                 </a>
                             </span>

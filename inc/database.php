@@ -151,7 +151,7 @@ function varimit_variation_values_display_from_db($results, $variationid) {
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'varimit_variation_values';
-    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE variationid = ' . $variationid , ARRAY_A );
+    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE variationid = ' . $variationid . ' ORDER BY prioritet ASC', ARRAY_A );
     return $results;
 
 }
@@ -159,6 +159,7 @@ function varimit_variation_values_display_from_db($results, $variationid) {
 /**
  * Удаление значения вариации
  */
+/*
 function varimit_delete_variation_value() {
     global $wpdb;
 
@@ -178,7 +179,7 @@ function varimit_delete_variation_value() {
     return $del_varimit_variation_value;
         wp_die();
 }
-
+*/
 /**
  * Извлечение значений вариации для конкретной вариации
  */
@@ -188,7 +189,7 @@ function varimit_variation_values_output_arr_from_db( $variation_id_inner ) {
     global $wpdb;
     $table_name = $wpdb->prefix . 'varimit_variation_values';
 
-    $results = $wpdb->get_results( 'SELECT namevalue FROM ' . $table_name . ' WHERE variationid = ' . $variation_id_inner , ARRAY_A );
+    $results = $wpdb->get_results( 'SELECT namevalue FROM ' . $table_name . ' WHERE variationid = ' . $variation_id_inner . ' ORDER BY prioritet ASC' , ARRAY_A );
     return $results;
 
 }
@@ -242,7 +243,65 @@ return $num_varimit;
     wp_die();
 }
 
+/**
+ * Сортировка по приоритетам
+ */
+add_action('wp_ajax_variation_values_sort', 'varimit_action_variation_values_sort'); 
+function varimit_action_variation_values_sort(){ 
+    global $wpdb;
 
+    if ( isset( $_POST['variationid'] ) ) {
+        $variationid = sanitize_text_field( $_POST['variationid'] );
+    }
 
+    if ( isset( $_POST['positions'] ) ) {
+        $positions = sanitize_text_field( $_POST['positions'] );
+        $prioritet = explode(";", $positions);
+    }
 
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+    foreach ($prioritet as $key => $val) {
+        $wpdb->update( 
+            $table_name, 
+            [ 
+                'prioritet' =>  $key        
+            ],
+            [ 
+                'variationid' => $variationid,
+                'id' => $val 
+            ],
+            [ '%d' ],
+            [ '%d','%d' ]
+        );
+    }
+
+    wp_die();
+}
+
+/**
+ * Удалаение значения вариации 
+ */
+add_action('wp_ajax_variation_values_del', 'varimit_action_variation_values_del'); 
+function varimit_action_variation_values_del(){ 
+    global $wpdb;
+
+    if ( isset( $_POST['variationid'] ) ) {
+        $variationid = sanitize_text_field( $_POST['variationid'] );
+    }
+
+    if ( isset( $_POST['value_del_id'] ) ) {
+        $value_del_id = sanitize_text_field( $_POST['value_del_id'] );
+    }
+
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+    $wpdb->delete( $table_name,
+    [ 'id' => $value_del_id ]
+    );
+
+    echo "Значение вариации удалено";
+
+    wp_die();
+}
  ?>

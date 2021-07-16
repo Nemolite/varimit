@@ -222,18 +222,50 @@
           placeholder: 'emptySpace',
           cursor:'move',
           update: function(event, ui) {
+               var variationid = $(this).attr("data-variationid");
                var changedList = this.id;
                var order = $(this).sortable('toArray');
-               var positions = order.join(';');
-           
-               console.log({
-                 id: changedList,
-                 positions: positions
-               });
+               var positions = order.join(';');           
+            
+               jQuery.ajax({
+                    url: myajax.ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'variation_values_sort',
+                        positions: positions,
+                        variationid: variationid                     
+
+                    },success:function( request ){                       
+                      
+                    } 
+                });
           }
       });
-       
+
+/**
+ * Удаление значения вариации
+ * 
+ */
   
+     $(`.delete-value`).on('click', function() { 
+          let variationid = $('.varimit-values-content').attr("data-variationid");
+         
+          let valueDelID = jQuery(this).attr("data-value_del_id");                                    
+                     
+         jQuery.ajax({
+                 url: myajax.ajaxurl,
+                 type: 'POST',
+                 data: {
+                     action: 'variation_values_del',
+                     variationid: variationid,
+                     value_del_id: valueDelID                   
+
+                 },success:function( request ){
+                    
+                    alert( request );
+                 } 
+             });
+
+     });
+ 
 } )( jQuery );
-
-
