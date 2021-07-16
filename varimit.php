@@ -26,7 +26,11 @@ add_action( 'wp_enqueue_scripts', 'script_and_style_varimit' );
  */
 
 function script_and_style_varimit_admin(){
+	
+	wp_enqueue_style( 'varimit-adminjqui',  plugins_url('assets/css/jquery-ui.min.css', __FILE__));
 	wp_enqueue_style( 'varimit-adminatyle',  plugins_url('assets/css/style-admin.css', __FILE__));
+
+	wp_enqueue_script( 'varimit-adminjqui', plugins_url('assets/js/jquery-ui.min.js', __FILE__),array(),'1.12.1');
 	wp_enqueue_script( 'varimit-adminscript', plugins_url('assets/js/varimit-admin.js', __FILE__),array(),'1.0.0','in_footer');
 
 	wp_localize_script( 'varimit-adminscript', 'myajax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );

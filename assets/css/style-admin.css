@@ -144,3 +144,9 @@
   margin-left: 10px;
   position: relative;
 }
+
+.emptySpace {
+  border: medium dotted #c3c4c7;
+  height: 50px;
+  margin: 4px;
+}

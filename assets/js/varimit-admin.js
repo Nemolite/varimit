@@ -68,7 +68,7 @@
                processData : false,
                contentType : false, 
                type:'POST', 
-                    success:function(request){
+                    success:function(request){                        
                          alert("Значение вариации добавлена");
                          setTimeout(function() { location.reload() }, 1000);   
                                                                                                          
@@ -214,6 +214,25 @@
           valueselect( i );        
         
       } 
+
+      /**
+       * Сортировка и перетаскивание
+       */       
+       $('.varimit-values-content').sortable({
+          placeholder: 'emptySpace',
+          cursor:'move',
+          update: function(event, ui) {
+               var changedList = this.id;
+               var order = $(this).sortable('toArray');
+               var positions = order.join(';');
+           
+               console.log({
+                 id: changedList,
+                 positions: positions
+               });
+          }
+      });
+       
   
 } )( jQuery );
 

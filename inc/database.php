@@ -122,8 +122,13 @@ function varimit_action_variation_add_value(){
         $variationid= sanitize_text_field( $_POST['variationid'] );
     }  
 
-    $urlvalue = "https://belmarco.promo-z.ru/wp-content/uploads/2018/06/Nika-26.06.1-1.png";
- 
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+
+    $attachment_id = media_handle_upload( 'variation_file_value', 0 );
+     
+    $urlvalue = wp_get_attachment_url( $attachment_id ); 
 	$table_name_values = $wpdb->prefix . 'varimit_variation_values';
   
     $wpdb->insert( $table_name_values, [ 
@@ -133,6 +138,7 @@ function varimit_action_variation_add_value(){
         'variationid' => $variationid
         ] );
 
+    
     wp_die();
     
 }

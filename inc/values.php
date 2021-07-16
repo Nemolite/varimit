@@ -7,6 +7,7 @@
  * Форма настроки значений вариации
  */
 function varimit_add_variation_value( $variationid, $namevari ) {
+   
     ?>
 
     <h1>Добавление значений вариации <?php echo esc_html( $namevari ); ?></h1>
@@ -25,6 +26,7 @@ function varimit_add_variation_value( $variationid, $namevari ) {
           <div class="col-wrap">
              
               <div class="varimit-values">
+                  <p>* Для сортировки приоритетов используйте перетаскивание</p>
                 <div class="varimit-values-head">
 
                 <div class="varimit-values-head-name">
@@ -51,17 +53,17 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                     $varimit_value_slug = 'slugvalue';
                     $urlvalue   = 'urlvalue';
 
-                    $varimit_repetitions = ( $varimit_variation_values_output ) ? count( $varimit_variation_values_output ) : 1;
-
                     if ($varimit_variation_values_output) {
                     ?>
 
-                    <?php for ( $varimit_idx = 0; $varimit_idx <= ($varimit_repetitions-1); $varimit_idx++ ) { ?>
+                    <?php foreach($varimit_variation_values_output as $varimit_temp_list) { ?>
 
-                    <div class="varimit-values-content-item">
+                    <div class="varimit-values-content-item" 
+                        id ="<?php echo esc_html( $varimit_temp_list[ $varimit_value_id ] ); ?>"
+                     >
                         <div class="varimit-values-content-item-name">
                             <p class="varimit-values-head-txt">
-                                <?php echo esc_html( $varimit_variation_values_output[ $varimit_idx ][ $varimit_value_name ] ); ?>
+                                <?php echo esc_html( $varimit_temp_list[ $varimit_value_name ] ); ?>
                             </p>
 
                             <div class="row-actions-values">
@@ -69,7 +71,7 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                                 <a href="
                                     <?php echo esc_url( 
                                         add_query_arg( 
-                                            'edit-value', $varimit_variation_values_output[ $varimit_idx ][ $varimit_value_id ] , 
+                                            'edit-value', $varimit_temp_list[ $varimit_value_id ] , 
                                             'edit.php?post_type=product&amp;page=variation&amp;varimit_action=edit-value' ) ); 
                                     ?>"
                                 >
@@ -77,7 +79,7 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                                 </a> | 
                             </span>
                             <span class="delete">
-                                <a class="delete-value" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'delete-value', $varimit_variation_values_output[ $varimit_idx ][ $varimit_value_id ], 'edit.php?post_type=product&amp;page=variation&amp;varimit_action=delete-value' ), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>">
+                                <a class="delete-value" href="<?php echo esc_url( wp_nonce_url( add_query_arg( 'delete-value', $varimit_temp_list[ $varimit_value_id ], 'edit.php?post_type=product&amp;page=variation&amp;varimit_action=delete-value' ), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>">
                                     <?php esc_html_e( 'Delete', 'woocommerce' ); ?>
                                 </a>
                             </span>
@@ -88,11 +90,11 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                         </div>
                         <div class="varimit-values-content-item-slug">
                             <p class="varimit-values-head-txt">
-                                <?php echo esc_html( $varimit_variation_values_output[ $varimit_idx ][ $varimit_value_slug ] ); ?>
+                                <?php echo esc_html( $varimit_temp_list[ $varimit_value_slug ] ); ?>
                             </p>
                         </div>
                         <div class="varimit-values-content-item-img">
-                            <img src="<?php echo esc_url( $varimit_variation_values_output[ $varimit_idx ][ $urlvalue  ] ); ?>" alt="">
+                            <img src="<?php echo esc_url( $varimit_temp_list[ $urlvalue  ] ); ?>" alt="">
                         </div>
                     </div>
 
