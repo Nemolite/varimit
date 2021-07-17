@@ -112,4 +112,14 @@ require "inc/product.php";
  */
 require "inc/product_db.php";
 
+/**
+ * Модуль вывода вариации в карточке товра
+ */
+require "inc/variation_cart.php";
+
+/**
+ * Модуль работы с таблицами баз данных для страницы товара
+ */
+require "inc/cart_db.php";
+
 ?>
