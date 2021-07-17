@@ -1,6 +1,23 @@
 ( function( $ ) {
+
+     /**
+      * Модальное окно в карточке товара
+      */
     
-     const counter = $('.varimit-output-single-product-inner-left').attr('data-key_parent');
-console.log(counter);
+     $(`.varimit-output-single-product-inner-left`).on('click', function() {           
+         
+          let valueParentModal = jQuery(this).attr("data-id_parent");                                    
+                     
+          $(`#modal_${valueParentModal}`).show();
+
+     });
+
+     $(`.varimit-popup-output-close`).on('click', function() {           
+         
+          let valueCloseModal = jQuery(this).attr("data-id_close");                                    
+                     
+          $(`#modal_${valueCloseModal}`).hide();
+
+     });
 	
 } )( jQuery );
