@@ -267,5 +267,67 @@
              });
 
      });
+
+/**
+ * Товар в админке
+ * Удаление атрибута вариации из списка
+ */     
+
+ $(`.del-variation-list`).on('click', function() { 
+     let delid = $(this).attr("data-del_variation_id");
+    
+     $(`#select_variation_${delid}`).hide();   
+                                 
+                
+    jQuery.ajax({
+            url: myajax.ajaxurl,
+            type: 'POST',
+            data: {
+                action: 'variation_delete_product',
+                delid: delid
+                                  
+
+            },success:function( request ){
+               
+               alert( request );
+            } 
+        });
+
+});
+
+/**
+ * Товар в админке
+ * Добавление строки вариации
+ */
+
+ $(`#select-add-list`).on('click', function() { 
+     $(`.select-variation-list`).each(function (index, element) {
+          // index (число) - текущий индекс итерации (цикла)
+            // данное значение является числом
+            // начинается отсчёт с 0 и заканчивается количеству элементов в текущем наборе минус 1
+          // element - содержит DOM-ссылку на текущий элемент
+          //$(element).not(':visible').show();
+          let temper = $(element).is(':visible');
+          
+          if (!temper) {
+               $(element).show();
+               return false; 
+          }
+
+              
+          console.log('Индекс элемента div: ' + index + '; id элемента = ' + $(element).attr('id')); 
+   
+          /*
+          let variationCount = $(`#variation_count`).attr(`data-variation_count`);       
+        
+          if ((index+1)==variationCount) {
+             $(`#select-add-list`).hide();  
+          }
+          */
+        });
+       
+});
+
+
  
 } )( jQuery );
