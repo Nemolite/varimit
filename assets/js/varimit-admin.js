@@ -177,43 +177,7 @@
           });
      });
 
-       /**
-   * Товар в админке
-   * выборка из select
-   */
-     const valueselect = ( id ) => {      
-          $('#slecet-point-process').on('change', `#select_values_${id}`, function() { 
-               let optionpostid = $('#idenvar').val();
-
-               let valueID = jQuery(`#select_values_${id}`).attr("data-value_id");                                  
-               let optionValueSlug = jQuery(`#select_values_${id}`).val();                
-               let optionValueName = jQuery(`#select_values_${id} option:selected`).text();     
-                          
-              jQuery.ajax({
-                      url: myajax.ajaxurl,
-                      type: 'POST',
-                      data: {
-                          action: 'varimit_select_values',
-                          optionpostid: optionpostid,
-                          value_id: valueID,
-                          option_slug: optionValueSlug,
-                          option_name: optionValueName,
-
-                      },success:function( request ){
-                         
-                         
-                      } 
-                  });
   
-          });
-          
-      }     
-      
-      const varimit_value_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
-      for ( let i = 1;i<=varimit_value_index;i++ ) {
-          valueselect( i );        
-        
-      } 
 
       /**
        * Сортировка и перетаскивание
@@ -301,21 +265,13 @@
  */
 
  $(`#select-add-list`).on('click', function() { 
-     $(`.select-variation-list`).each(function (index, element) {
-          // index (число) - текущий индекс итерации (цикла)
-            // данное значение является числом
-            // начинается отсчёт с 0 и заканчивается количеству элементов в текущем наборе минус 1
-          // element - содержит DOM-ссылку на текущий элемент
-          //$(element).not(':visible').show();
+     $(`.select-variation-list`).each(function (index, element) {         
           let temper = $(element).is(':visible');
           
           if (!temper) {
                $(element).show();
                return false; 
-          }
-
-              
-          console.log('Индекс элемента div: ' + index + '; id элемента = ' + $(element).attr('id')); 
+          }  
    
           /*
           let variationCount = $(`#variation_count`).attr(`data-variation_count`);       
@@ -327,6 +283,45 @@
         });
        
 });
+
+     /**
+   * Товар в админке
+   * выборка из select вариации
+   */
+      const varselect = ( idx ) => {      
+          $('#slecet-point-process').on('change', `#select_var_${idx}`, function() { 
+
+               let optionpostid = $('#idenvar').val(); // post id
+
+               let varID = jQuery(`#select_var_${id}`).attr("data-select_var_id");                                  
+               let optionVarSlug = jQuery(`#select_val_${id}`).val();                
+               let optionVarName = jQuery(`#select_val_${id} option:selected`).text();     
+                          
+              jQuery.ajax({
+                      url: myajax.ajaxurl,
+                      type: 'POST',
+                      data: {
+                          action: 'varimit_select_variation',
+                          optionpostid: optionpostid,
+                          var_id: varID,
+                          option_var_slug: optionVarSlug,
+                          option_var_name: optionVarName,
+
+                      },success:function( request ){
+                         
+                         alert ( request );
+                      } 
+                  });
+  
+          });
+          
+      }     
+      
+      const varimit_var_index = jQuery("input[name='varimit_select_var_index']").attr("data-index_full");    
+
+      for ( let idx = 0;idx<=varimit_var_index;idx++ ) {         
+          varselect( idx );                 
+      } 
 
 
  

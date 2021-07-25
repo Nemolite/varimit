@@ -99,20 +99,32 @@ function varimit_output_variation_in_product() {
                 <th class="varimit-table-inner-content-title">Действие</th>
               </tr>
               <?php
-              $index = 1;
+              $index = 0;
                   foreach ($varimit_variation_output_product as $variation_output_list) {
-                   // show( $variation_output_list );
+                   show( $variation_output_list );
+
+                   $meta_key = '_varimit_product_variation_'. $variation_output_list[ $variation_id];
+                   $arr_temp = get_post_meta( $idenvar, $meta_key, true ); 
+                   show( $arr_temp );
+                    
               ?>        
               <tr 
-              id="select_variation_<?php echo esc_attr( $index  ); ?>" 
+              id="select_index_<?php echo esc_attr( $index  ); ?>" 
               class="select-variation-list" 
 
-              data-variation_id="<?php echo esc_attr( $index  ); ?>"
+              data-jvar_index="<?php echo esc_attr( $index  ); ?>"
               >              
 
-
+<!-- Вариации-->
                   <td class="varimit-table-inner-content-txt">
-                    <select>
+                    <select
+                    
+                      name="select_var_<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>" 
+                      id="select_var_<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>" 
+                      class="selectclass" 
+                      data-select_var_id="<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>"
+                  
+                    >
                       <option value="notselect_variation">-Выбрать-</option>
                           <?php 
                           $results_data = array();
@@ -122,14 +134,15 @@ function varimit_output_variation_in_product() {
                          
                           ?>
                       <option 
-                              value="<?php echo esc_attr( $arr_variation_list['slugvari'] ); ?>"                          
-                            >
+                        value="<?php echo esc_attr( $arr_variation_list['slugvari'] ); ?>"                          
+                      >
                           <?php echo esc_attr( $arr_variation_list['namevari'] );?>
                       </option>
                         <?php endforeach; ?>
                     </select>
                   </td>
-
+<!-- end Вариации-->
+<!-- Значения Вариации-->
 
                   <td class="varimit-table-inner-content-txt">
                     <select>
@@ -145,7 +158,7 @@ function varimit_output_variation_in_product() {
                     
                     </select>
                   </td>
-
+<!-- end Значения Вариации-->
 
                   <td class="varimit-table-inner-content-txt">
 
@@ -167,10 +180,10 @@ function varimit_output_variation_in_product() {
                ?> 
              
               <input type="hidden" 
-              name="varimit_value_index" 
-              id="varimit_value_index" 
+              name="varimit_select_var_index" 
+              id="varimit_select_var_index" 
               value=""
-              data-index_full="<?php echo esc_html( $varimit_index ); ?>"
+              data-index_full="<?php echo esc_html( $index ); ?>"
               >
             </tdoby>   
           </table>
@@ -180,6 +193,14 @@ function varimit_output_variation_in_product() {
             type="button" 
             value="Добавить строку для ввода вариации и его значения"
           >
+          <p></p>
+          <input 
+            id="varimit-refresh"
+            type="button" 
+            value="Подтвердить"
+            onClick="window.location.reload();"
+          >
+          
          </div>
        </div>
        

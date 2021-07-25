@@ -78,6 +78,43 @@ function varimit_variation_values_display_product_all_from_db( $value_id_out ) {
 
 }
 
+/**
+ * Добавление и изменения 
+ * вариации товара
+ */
+add_action('wp_ajax_varimit_select_variation', 'varimit_action_select_product_variation'); 
+function varimit_action_select_product_variation(){ 
+   
+    $main_arr = array();
+
+    if ( isset( $_POST['optionpostid'] ) ) {
+        $optionpostid = sanitize_text_field( $_POST['optionpostid'] );               
+    }
+
+    if ( isset( $_POST['var_id'] ) ) {
+        $var_id = sanitize_text_field( $_POST['var_id'] );
+        array_push($main_arr, $var_id );  
+        $meta_key = '_varimit_product_variation_'. $var_id;
+
+    }
+
+    if ( isset( $_POST['option_var_slug'] ) ) {
+        $option_var_slug = sanitize_text_field( $_POST['option_var_slug'] ); 
+        array_push($main_arr, $option_var_slug);      
+
+    }
+
+    if ( isset( $_POST['option_var_name'] ) ) {
+        $option_var_name = sanitize_text_field( $_POST['option_var_name'] );
+        array_push($main_arr, $option_var_name);        
+
+    }   
+  
+    update_post_meta( $optionpostid, $meta_key,  $main_arr );    
+    
+    wp_die();
+}
+
  /**
  * Добавление и изменения значения 
  * вариации товара
