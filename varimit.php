@@ -81,7 +81,14 @@ function varimit_create_plugin_tables_variation_values()
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
 } 
-
+/**
+ * Helper
+ */
+function show( $arr ){
+	echo "<pre>";
+	print_r( $arr );
+	echo "</pre>";
+}
 /**
  * Модуль создания подменю вариации
  */

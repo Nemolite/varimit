@@ -97,7 +97,7 @@ function varimit_output_variation_in_product() {
                         $vriation_value_output_select = apply_filters( 'varimit_variation_values_display_product_all', $value_id_out );
 
               ?>
-                <tr>              
+                <tr class="select-variation-list">              
                   <td class="varimit-table-inner-content-txt">
                   <?php echo esc_html( $varimit_variation_output_product[ $varimit_index ][ $varimit_name ] ); ?>
                   </td>
@@ -138,6 +138,12 @@ function varimit_output_variation_in_product() {
               data-index_full="<?php echo esc_html( $varimit_index ); ?>"
               >
           </table>
+          <p></p>
+          <input 
+            id="select-add-list"
+            type="button" 
+            value="Добавить строку для ввода вариации и его значения"
+          >
 
          </div>
        </div>

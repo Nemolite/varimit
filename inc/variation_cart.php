@@ -40,16 +40,27 @@ function varimit_display_variation_single_product() {
     $single =false; 
 
     $meta_values = get_post_meta( $id, $key, $single );
+    //show( $meta_values );
+
+    $varimit_iden = get_post_meta( $id, '_varimit_iden', true );
+    // show($varimit_iden);
+
+    $arr_id_iden = varimit_get_product_union_iden( $varimit_iden ); 
+    // show( $arr_id_iden );
 
     $etalon = '_varimit__product_value_';
 
     foreach ($meta_values as $key => $val){
          if (str_contains( $key, $etalon)) {
 
-            $select_list = unserialize($val[0]);            
+            $select_list = unserialize($val[0]);  
+            // show( $select_list );          
             $var_id = $select_list[0];
 
             $name_variation = varimit_get_data_variation_cart($var_id);
+            // show( $name_variation );
+
+           
            
             if('notselect'!==$select_list[1]) {
             ?>
@@ -102,20 +113,53 @@ function varimit_display_variation_single_product() {
                                 </path>
                             </svg> 
                             </div> <!-- varimit-popup-output-close -->
-
-
-                        <div class="varimit-mini-list">
-
-                            <div class="varimit-mini-list-img">
+                            <?php
                             
-                            </div> <!-- varimit-mini-list-img -->
+                               // получаем совпадения вариации
+                              $post_in_arr = varimit_get_array_variation_for_product( $var_id );
+                              // show($post_in_arr);
+                              // show($arr_id_iden);
 
-                            <div class="varimit-mini-list-title">
-                            
+                              $for_post_in = array_intersect( $arr_id_iden, $post_in_arr );
+                              // show($for_post_in);
+                              // dev сортировка
 
-                            </div> <!-- varimit-mini-list-title -->
-                        </div> <!-- varimit-mini-list -->   
+                                $args = array(
+                                'post_type' => 'product',                                
+                                'post__in' => $for_post_in,        
+                                    
+                                );
 
+                                $query = new WP_Query($args);
+                                if( $query->have_posts() ){
+                                    while( $query->have_posts() ){            
+                                            $query->the_post();
+                                       
+                            ?>
+
+                            <a href="<?php echo get_permalink(); ?>">
+
+                                <div class="varimit-mini-list">
+                                    <div class="varimit-mini-list-img">
+                                    <?php
+                                        if ( has_post_thumbnail()) {
+                                        the_post_thumbnail();
+                                        }
+                                    ?>                                                                
+                                    </div> <!-- varimit-mini-list-img -->
+                                    <div class="varimit-mini-list-title">
+                                    <?php
+                                        the_title();
+                                        echo "<br>";                               
+                                    ?>
+                                    </div> <!-- varimit-mini-list-title -->
+                                </div> <!-- varimit-mini-list --> 
+                            </a>  
+                        <?php            				
+                            }			     
+                        }	
+                            wp_reset_postdata();                   
+                        ?>
 
                     </div> <!-- varimit-popup-output -->
                 
@@ -125,6 +169,8 @@ function varimit_display_variation_single_product() {
                    
         }
     } 
-  }  
+  } 
+  
+ 
 ?>
 

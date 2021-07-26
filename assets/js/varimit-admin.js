@@ -210,6 +210,8 @@
       }     
       
       const varimit_value_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
+    
+
       for ( let i = 1;i<=varimit_value_index;i++ ) {
           valueselect( i );        
         
@@ -267,5 +269,45 @@
              });
 
      });
- 
+/**
+ * Скрываем не выбранные вариации
+ */
+
+const selecthide = (id) => {
+     let temper = $(`#select_values_${id}`).val();    
+     if ('notselect'==temper){
+          $(`#select_values_${id}`).parent().parent().hide();
+     }
+}
+
+const cordiner = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
+for ( let i = 1;i<=cordiner;i++ ) {
+     selecthide( i );        
+  
+} 
+
+
+/**
+ * Товар в админке
+ * Добавление (показ других вариации)
+ */
+ $(`#select-add-list`).on('click', function() { 
+     $(`.select-variation-list`).each(function (index, element) {         
+          let temper = $(element).is(':visible');
+          
+          if (!temper) {
+               $(element).show();
+               return false; 
+          }  
+   
+          /*
+          let variationCount = $(`#variation_count`).attr(`data-variation_count`);       
+        
+          if ((index+1)==variationCount) {
+             $(`#select-add-list`).hide();  
+          }
+          */
+     });
+       
+});
 } )( jQuery );
