@@ -129,4 +129,18 @@ require "inc/variation_cart.php";
  */
 require "inc/cart_db.php";
 
+/**
+ * Модуль для скрытия товара ,к роме выбранного главного
+ */
+require "inc/filter.php";
+
+/**
+ * Модуль работы с таблицами баз данных для фильтра
+ */
+require "inc/filter_db.php";
+
+/**
+ * Модуль для работы с каталогом
+ */
+require "inc/catalog.php";
 ?>

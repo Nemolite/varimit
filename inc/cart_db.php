@@ -70,4 +70,11 @@
 
       return $post_in_arr;
  }
+
+ /**
+  * Вывод в карточке товара, в попап, миниатюры вариации
+  */
+  function varimit_get_mini_img_values(){
+      echo "img";
+  }
 ?>

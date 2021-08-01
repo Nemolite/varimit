@@ -33,6 +33,9 @@
    *  
    */
 function varimit_display_variation_single_product() {
+
+    // show( varimit_get_id_product_for_hide() );
+
     global $wp_query;
     $product = wc_get_product( $wp_query->post );
     $id = $product->get_id(); 
@@ -162,8 +165,82 @@ function varimit_display_variation_single_product() {
                         ?>
 
                     </div> <!-- varimit-popup-output -->
-                
-                </div> <!-- varimit-output-single-product-inner -->
+
+
+
+
+
+                    <div class="varimit-left-output" id ="left_<?php echo esc_attr( $var_id ); ?>">
+                    
+                    <div class="varimit-popup-output-title"> 
+                    <?php
+                        echo "<b>".$art_title_col."</b>";
+                    ?>
+                    </div> <!-- varimit-popup-output-title -->
+
+                        <div class="varimit-popup-output-close" data-id_close ="<?php echo esc_attr( $var_id ); ?>">
+                        <svg 
+                            focusable="false" 
+                            viewBox="0 0 24 24" 
+                            class="range-revamp-svg-icon range-revamp-btn__icon" 
+                            aria-hidden="true">
+                            <path 
+                            fill-rule="evenodd" 
+                            clip-rule="evenodd" 
+                            d="M12 13.415l4.95 4.95 1.414-1.415-4.95-4.95 4.95-4.95-1.415-1.413-4.95 4.95-4.949-4.95L5.636 7.05l4.95 4.95-4.95 4.95 1.414 1.414 4.95-4.95z">
+                            </path>
+                        </svg> 
+                        </div> <!-- varimit-popup-output-close -->
+
+                        <div class="varimit_left_mini_content">                          
+                        <?php
+                        
+                           // получаем совпадения вариации
+                          $post_in_arr = varimit_get_array_variation_for_product( $var_id );
+                          // show($post_in_arr);
+                          // show($arr_id_iden);
+
+                          $for_post_in = array_intersect( $arr_id_iden, $post_in_arr );
+                          // show($for_post_in);
+                          // dev сортировка
+
+                            $args_left = array(
+                            'post_type' => 'product',                                
+                            'post__in' => $for_post_in,        
+                                
+                            );
+
+                            $query_mini = new WP_Query($args_left);
+                            if( $query_mini->have_posts() ){
+                                while( $query_mini->have_posts() ){            
+                                    $query_mini->the_post();
+                                   
+                        ?>                           
+                            <div class="col-xs-6">
+                            <a href="<?php echo get_permalink(); ?>">
+                            <?php
+                                        if ( has_post_thumbnail()) {
+                                        the_post_thumbnail();
+                                        }
+                            ?> 
+                            <?php
+                                        the_title();
+                                        echo "<br>";                               
+                            ?>
+
+
+
+                            </a>
+                            </div>   <!-- varimit-left-output -->      
+                    <?php            				
+                        }			     
+                    }	
+                        wp_reset_postdata();                   
+                    ?>
+                    </div> <!-- varimit_left_mini_content -->
+                </div> <!-- varimit-left-output -->
+        
+              </div> <!-- varimit-output-single-product-inner -->
             <?php
             }
                    
