@@ -310,4 +310,47 @@ for ( let i = 1;i<=cordiner;i++ ) {
      });
        
 });
+
+/**
+ * Товар в адпминке
+ * Удаление строки вариации и его значения
+ */
+
+       const deleteselect = ( id ) => {      
+          $(`#select_del_${id}`).on('click', function() { 
+               let optionpostid = $('#idenvar').val();
+               
+               let valueID = $(`#select_del_${id}`).attr("data-del_variation_id");                                               
+                      
+              jQuery.ajax({
+                      url: myajax.ajaxurl,
+                      type: 'POST',
+                      data: {
+                          action: 'varimit_delete_select_option',
+                          optionpostid: optionpostid,                         
+                          value_id: valueID,                          
+
+                      },success:function( request ){                         
+                         
+                        $(`#select_del_${id}`).parent().parent().hide();
+                         
+                      },error: function( err ) {
+                                  	
+                    } 
+                  });
+  
+          });
+          
+      }     
+      
+      const varimit_value_index_del = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
+  
+
+      for ( let i = 1;i<=varimit_value_index_del;i++ ) {
+          deleteselect( i );        
+        
+      } 
+  
+
+
 } )( jQuery );

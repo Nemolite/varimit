@@ -114,4 +114,43 @@ function varimit_action_select_values(){
     
     wp_die();
 }
+
+/**
+ * Извлечение slug вариации для конкретной вариации
+ */
+
+function varimit_variation_get_slug_from_db( $selected_vari_id ) {
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'varimit_variation';
+
+    $output = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE id = ' . $selected_vari_id , ARRAY_A );
+    return $output;
+
+}
+
+/**
+ * Товар в админке
+ * Удаление строки вариации и его значения
+ * 
+ */
+add_action('wp_ajax_varimit_delete_select_option', 'varimit_action_varimit_delete_select_option'); 
+function varimit_action_varimit_delete_select_option(){ 
+
+    if ( isset( $_POST['optionpostid'] ) ) {
+        $optionpostid = (int)sanitize_text_field( $_POST['optionpostid'] );                      
+    }
+
+
+    if ( isset( $_POST['value_id'] ) ) {
+        $value_id = sanitize_text_field( $_POST['value_id'] );             
+        $meta_key = '_varimit__product_value_'. $value_id;
+
+    }
+    
+    $marker = delete_post_meta( $optionpostid, $meta_key );
+    echo $marker;
+
+    wp_die();  
+}
 ?>

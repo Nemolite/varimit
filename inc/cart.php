@@ -26,8 +26,6 @@
         return '' === $needle || false !== strpos($haystack, $needle);
     }
 }
-
-
     /**
    * Функция вывода ссылок на попап вариативных товаров
    *  
@@ -57,28 +55,37 @@ function varimit_display_variation_single_product() {
          if (str_contains( $key, $etalon)) {
 
             $select_list = unserialize($val[0]);  
-            // show( $select_list );          
+
+           // show( $select_list );          
+
             $var_id = $select_list[0];
-
-            $name_variation = varimit_get_data_variation_cart($var_id);
-            // show( $name_variation );
-
-           
+            if( !is_array($var_id) ) {
+                $name_variation = varimit_get_data_variation_cart($var_id);
+                // show( $name_variation );
+            }
+      
            
             if('notselect'!==$select_list[1]) {
             ?>
+             <?php
+                if( !is_array( $select_list[2]  ) ) { 
+            ?>
                 <div class= "varimit-output-single-product-inner"> 
-                
+               
                         <div class= "varimit-output-single-product-inner-left"       
                             data-id_parent= "<?php echo esc_attr( $var_id ); ?>"                       
                         >
                         <?php
-                        echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>";
-                        echo "<br>";
-                        echo esc_attr( $select_list[2] );
+                       
+                            echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>";
+                            echo "<br>";
+                           
+                            echo esc_attr( $select_list[2] );
+                       
+                       
                         ?>
                         </div> <!-- varimit-output-single-product-inner-left -->
-                
+               
                     <div class= "varimit-output-single-product-inner-right">
 
                     <svg 
@@ -167,9 +174,6 @@ function varimit_display_variation_single_product() {
                     </div> <!-- varimit-popup-output -->
 
 
-
-
-
                     <div class="varimit-left-output" id ="left_<?php echo esc_attr( $var_id ); ?>">
                     
                     <div class="varimit-popup-output-title"> 
@@ -227,9 +231,6 @@ function varimit_display_variation_single_product() {
                                         the_title();
                                         echo "<br>";                               
                             ?>
-
-
-
                             </a>
                             </div>   <!-- varimit-left-output -->      
                     <?php            				
@@ -241,6 +242,9 @@ function varimit_display_variation_single_product() {
                 </div> <!-- varimit-left-output -->
         
               </div> <!-- varimit-output-single-product-inner -->
+              <?php
+                }
+            ?>  
             <?php
             }
                    

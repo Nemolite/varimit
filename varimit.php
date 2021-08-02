@@ -122,7 +122,7 @@ require "inc/product_db.php";
 /**
  * Модуль вывода вариации в карточке товра
  */
-require "inc/variation_cart.php";
+require "inc/cart.php";
 
 /**
  * Модуль работы с таблицами баз данных для страницы товара

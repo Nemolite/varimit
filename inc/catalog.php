@@ -25,7 +25,10 @@
   function varimit_display_variation() {
     global $wp_query;
     $product = wc_get_product( $wp_query->post );
-    $product_id = $product->get_id();
+    if( $product ){
+      $product_id = $product->get_id();
+    }
+    
     // Получение прикрепленных товаров к таксаномии (вариации)
     /*    
     $id = $product->get_id();

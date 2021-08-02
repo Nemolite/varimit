@@ -11,6 +11,11 @@ function varimit_output_variation_in_product() {
   $idenvar = $post->ID;  
   // $metas = get_post_meta( $idenvar,'_varimit_iden',true );  
   // echo $metas;
+
+  // show( get_post_meta($idenvar,'_varimit__product_value_2',false) );
+
+  // show( get_post_meta($idenvar,'',true) );
+
   $check_main = get_post_meta( $idenvar,'_varimit_main',true );  
   
   if("1"==$check_main){   
@@ -90,16 +95,73 @@ function varimit_output_variation_in_product() {
               <tr>           
                 <th class="varimit-table-inner-content-title">Вариации</th>
                 <th class="varimit-table-inner-content-title">Значения</th>
+                <th class="varimit-table-inner-content-title">Действие</th>
               </tr>
               <?php for ( $varimit_index = 0; $varimit_index <= ($varimit_repetitions_output-1); $varimit_index++ ) { 
 
                         $value_id_out = $varimit_variation_output_product[ $varimit_index ][ $varimit_id ];                         
                         $vriation_value_output_select = apply_filters( 'varimit_variation_values_display_product_all', $value_id_out );
+          // show($vriation_value_output_select);
+          $selected_vari_id = $vriation_value_output_select[0]['variationid'];
+          if( $selected_vari_id ) {
+            $selected_vari_slug = varimit_variation_get_slug_from_db( $selected_vari_id );
+          }
+          // show($selected_vari_slug );
 
               ?>
                 <tr class="select-variation-list">              
                   <td class="varimit-table-inner-content-txt">
-                  <?php echo esc_html( $varimit_variation_output_product[ $varimit_index ][ $varimit_name ] ); ?>
+                  <select> 
+                    <option value="notselect">-не выбран-</option>
+                
+
+                  <?php // echo esc_html( $varimit_variation_output_product[ $varimit_index ][ $varimit_name ] ); ?>
+
+
+          <?php 
+          // show($varimit_variation_output_product);
+          
+
+/*
+          $req_key_meta_var = '_varimit__product_value_' . $value_id_out;
+          show( $req_key_meta_var );
+          $req_meta_varias = get_post_meta( $idenvar, $req_key_meta_var, false );
+
+          if ($arr) {
+            $selected_vari_id = $req_meta_varias[0][0];
+          } else {
+            $selected_vari_id = false;
+          }
+          */
+          // $selected_vari_id = $req_meta_varias[0][0];
+
+         // echo $selected_vari_id;
+        
+
+          // $selected_vari_slug = varimit_variation_get_slug_from_db( $varimit_name_option['id'] );
+          // show( $selected_vari_slug );
+         // echo $selected_vari_slug[0]['slugvari'];
+
+              foreach($varimit_variation_output_product as $varimit_name_option){
+          ?>
+            <option 
+              value="<?php echo esc_attr( $varimit_name_option['slugvari']  );?>"
+              data-vari_id=<?php echo esc_attr( $varimit_name_option['id']   );?>
+
+              <?php              
+             
+              selected( $selected_vari_slug[0]['slugvari'], $varimit_name_option['slugvari']);
+              ?>
+                                    
+            >
+                <?php echo esc_attr( $varimit_name_option['namevari']  );?>
+            </option>
+          <?php
+          }
+          ?>
+
+</select> 
+
                   </td>
                   <td class="varimit-table-inner-content-txt">
                     <select 
@@ -128,7 +190,20 @@ function varimit_output_variation_in_product() {
                         </option>
                         <?php endforeach; ?>
                     </select>
-                  </td>
+                  </td> 
+
+                  <td class="varimit-table-inner-content-txt">
+
+                  <input 
+                    id="select_del_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
+                    class="del-variation-list"
+                    data-del_variation_id="<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>"
+                    type="button" 
+                    value="Удалить"
+                  >
+
+                </td> 
+
                 </tr>
               <?php } ?>
               <input type="hidden" 
