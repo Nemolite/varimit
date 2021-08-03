@@ -135,16 +135,17 @@ function varimit_display_variation_single_product() {
                               // dev сортировка
 
                                 $args = array(
-                                'post_type' => 'product',                                
-                                'post__in' => $for_post_in,        
+                                'post_type' => 'product',
+                                'numberposts' => -1,                                
+                                'include' => $for_post_in,        
                                     
                                 );
-
-                                $query = new WP_Query($args);
-                                if( $query->have_posts() ){
-                                    while( $query->have_posts() ){            
-                                            $query->the_post();
-                                       
+                                
+                                $posts = get_posts($args);
+                                foreach( $posts as $post ){
+                                    setup_postdata($post);
+                                                    
+                                   
                             ?>
 
                             <a href="<?php echo get_permalink(); ?>">
@@ -152,21 +153,19 @@ function varimit_display_variation_single_product() {
                                 <div class="varimit-mini-list">
                                     <div class="varimit-mini-list-img">
                                     <?php
-                                        if ( has_post_thumbnail()) {
-                                        the_post_thumbnail();
-                                        }
+                                       echo get_the_post_thumbnail( $post->ID );
                                     ?>                                                                
                                     </div> <!-- varimit-mini-list-img -->
                                     <div class="varimit-mini-list-title">
                                     <?php
-                                        the_title();
+                                        echo $post->post_title;
                                         echo "<br>";                               
                                     ?>
                                     </div> <!-- varimit-mini-list-title -->
                                 </div> <!-- varimit-mini-list --> 
                             </a>  
                         <?php            				
-                            }			     
+                            		     
                         }	
                             wp_reset_postdata();                   
                         ?>
