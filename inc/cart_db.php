@@ -71,10 +71,33 @@
       return $post_in_arr;
  }
 
+
+ /**
+  * Вывод в карточке товара, в попап, значение вариации
+  */
+  function varimit_get_mini_name_values( $var_id, $product_id ){
+
+    $meta_name_key = '_varimit__product_value_'.$var_id;
+    
+    $meta_values = get_post_meta( $product_id, $meta_name_key, false );               
+
+    // return $value_name;
+
+    return $meta_values;
+}
+
+
  /**
   * Вывод в карточке товара, в попап, миниатюры вариации
   */
-  function varimit_get_mini_img_values(){
-      echo "img";
+  function varimit_get_mini_img_values( $value_id ){
+
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'varimit_variation_values';
+    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE id = ' . $value_id, ARRAY_A );
+    
+    // return $url_img;
+
+    return $results;
   }
 ?>

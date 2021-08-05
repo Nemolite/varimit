@@ -63,9 +63,27 @@ function varimit_display_variation_single_product() {
                 $name_variation = varimit_get_data_variation_cart($var_id);
                 // show( $name_variation );
             }
-      
+            $arr_var_check = varimit_get_array_variation_for_product( $var_id );
+
+            // show($arr_var_check);
+
+            $for_post_in = array_intersect( $arr_id_iden, $arr_var_check );
+
+            // show($for_post_in);
+
+            // echo count($for_post_in);
+
+            if ( 1===count($for_post_in) ) {
+                  $marker_one = "false";
+                 
+            } else {
+                $marker_one = "true"; 
+
+            }
+
+            // echo  $marker_one;
            
-            if('notselect'!==$select_list[1]) {
+            if( ('notselect'!==$select_list[1])&&("true"==$marker_one) ) {
             ?>
              <?php
                 if( !is_array( $select_list[2]  ) ) { 
@@ -133,11 +151,17 @@ function varimit_display_variation_single_product() {
                               $for_post_in = array_intersect( $arr_id_iden, $post_in_arr );
                               // show($for_post_in);
                               // dev сортировка
+                              // show($id);
 
+                              $arr_id = array();
+                              $arr_id[] = $id;
+                              // show($arr_id);
+                              $result_post_in = array_diff( $for_post_in, $arr_id );
+                              // show($result_post_in);
                                 $args = array(
                                 'post_type' => 'product',
                                 'numberposts' => -1,                                
-                                'include' => $for_post_in,        
+                                'include' => $result_post_in,        
                                     
                                 );
                                 
@@ -147,19 +171,32 @@ function varimit_display_variation_single_product() {
                                                     
                                    
                             ?>
+                              <?php
+                             $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );
+                             // show($arr_res);
 
-                            <a href="<?php echo get_permalink(); ?>">
+                             $url_img = varimit_get_mini_img_values( $arr_res[0][0] );
+
+                             //show($url_img);
+                               ?>
+
+                            <a href="<?php echo get_permalink( $post->ID ); ?>">
 
                                 <div class="varimit-mini-list">
                                     <div class="varimit-mini-list-img">
+
+                                    <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
                                     <?php
-                                       echo get_the_post_thumbnail( $post->ID );
+                                      
+                                      // echo get_the_post_thumbnail( $post->ID );
                                     ?>                                                                
                                     </div> <!-- varimit-mini-list-img -->
                                     <div class="varimit-mini-list-title">
                                     <?php
-                                        echo $post->post_title;
-                                        echo "<br>";                               
+                                        //echo $post->post_title;
+                                        //echo "<br>";                               
+                                        echo $arr_res[0][2];
+                                        echo "<br>";   
                                     ?>
                                     </div> <!-- varimit-mini-list-title -->
                                 </div> <!-- varimit-mini-list --> 
@@ -207,9 +244,14 @@ function varimit_display_variation_single_product() {
                           // show($for_post_in);
                           // dev сортировка
 
+                          $arr_id = array();
+                          $arr_id[] = $id;
+                              // show($arr_id);
+                          $result_post_in = array_diff( $for_post_in, $arr_id );
+
                             $args_left = array(
                             'post_type' => 'product',                                
-                            'post__in' => $for_post_in,        
+                            'post__in' => $result_post_in,        
                                 
                             );
 
@@ -220,14 +262,20 @@ function varimit_display_variation_single_product() {
                                    
                         ?>                           
                             <div class="col-xs-6">
-                            <a href="<?php echo get_permalink(); ?>">
+                              
+                            <a href="<?php echo get_permalink( $post->ID ); ?>">
+                            <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
                             <?php
+                            /*
                                         if ( has_post_thumbnail()) {
                                         the_post_thumbnail();
                                         }
+                            */            
                             ?> 
                             <?php
-                                        the_title();
+                                         //echo $post->post_title;
+                                        //echo "<br>";                               
+                                        echo $arr_res[0][2];
                                         echo "<br>";                               
                             ?>
                             </a>
