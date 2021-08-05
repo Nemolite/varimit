@@ -6,11 +6,11 @@
 add_action( 'pre_get_posts', 'hide_from_query' );
 function hide_from_query( $query ) {   
 
-    if ( is_admin() ) {
+    if ( is_admin() || $query->is_singular()) {
         return;
       }
 
-    if(  $query->is_main_query() && is_post_type_archive( 'product' )  ){
+    if(   $query->is_main_query()  ){
 
         $query->srt('post_type','product' );        
         $query->set( 'meta_query', 

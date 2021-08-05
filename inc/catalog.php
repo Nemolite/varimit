@@ -27,54 +27,17 @@
     $product = wc_get_product( $wp_query->post );
     if( $product ){
       $product_id = $product->get_id();
-    }
-    
-    // Получение прикрепленных товаров к таксаномии (вариации)
-    /*    
-    $id = $product->get_id();
-    $taxonomy = "varimit";
-
-    $arr_trems = get_the_terms( $id, $taxonomy );
-      // Вывод количество вариации
-    $varimit_var_count = 0;
-    if( is_array( $arr_trems ) ){
-      foreach ($arr_trems as $value) {
-        if (0==$value->parent){ 
-        
-          $varimit_var_count = $varimit_var_count + $value->count;
-     
-          }   
-      }
-    }
-    */
+    }    
    
-    // $arr_value = varimit_value_display_product_all_for_catalog();
     
     $key_iden = '_varimit_iden'; 
     $key_main = '_varimit_main';
 
     $meta_iden = get_post_meta( $product_id, $key_iden, true );
-
-    //echo $meta_iden;
+   
 
     $res_count = varimit_get_result_compare_id($meta_iden, $key_iden, $key_main );
 
-    //echo $res_count;
-    
-    /*
-    foreach( $arr_value as $values){
-      
-      $key = '_varimit__product_value_'.$values['id'];
-      
-      $meta_values = get_post_meta( $product_id, $key, $single );
-
-     
-      if($meta_values){       
-          $inx++;       
-        
-      }
-    }   
-   */
 
     $varimit_var_count = $res_count;
     if (0!= $varimit_var_count) {
@@ -140,5 +103,7 @@ function varimit_get_result_compare_id($meta_iden, $key_iden, $key_main ){
   }
  return $i;
 }
+
+
 
 ?>
