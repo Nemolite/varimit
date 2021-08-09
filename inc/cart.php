@@ -115,10 +115,12 @@ foreach($products_id_iden_arr as $velue_bert_id){
       
     }
 }
-    // show($alegon);
+
+$new_cabunker = 
+     //show($alegon);
      $news_pere = array();
 foreach($alegon as $k_id_modul => $lociminal){
-    if (($cabunker-1)==$lociminal){
+    if (($cabunker-1)==$lociminal ){
         $news_pere[] = $k_id_modul;
     }
 }
@@ -356,17 +358,15 @@ foreach($alegon as $k_id_modul => $lociminal){
                         <?php
                         
                            // получаем совпадения вариации
-                          $post_in_arr = varimit_get_array_variation_for_product( $var_id );
-                          // show($post_in_arr);
-                          // show($arr_id_iden);
+                          $post_in_arr = varimit_get_array_variation_for_product( $var_id );                          
 
                           $for_post_in = array_intersect( $arr_id_iden, $post_in_arr );
-                          // show($for_post_in);
+                         
                           // dev сортировка
 
                           $arr_id = array();
                           $arr_id[] = $id;
-                              // show($arr_id);
+                              
                           $result_post_in = array_diff( $for_post_in, $arr_id );
 
                             $args_left = array(
