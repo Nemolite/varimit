@@ -138,7 +138,7 @@ add_action('wp_ajax_varimit_delete_select_option', 'varimit_action_varimit_delet
 function varimit_action_varimit_delete_select_option(){ 
 
     if ( isset( $_POST['optionpostid'] ) ) {
-        $optionpostid = (int)sanitize_text_field( $_POST['optionpostid'] );                      
+        $optionpostid = (int)sanitize_text_field( $_POST['optionpostid'] );   
     }
 
 
@@ -153,4 +153,87 @@ function varimit_action_varimit_delete_select_option(){
 
     wp_die();  
 }
+
+ /**
+* Товар в админке
+ * Добавление и изменения  
+ * вариации товара
+ */
+add_action('wp_ajax_varimit_select_vari', 'varimit_action_varimit_select_vari'); 
+function varimit_action_varimit_select_vari(){ 
+   
+    $vari_arr = array();
+
+    if ( isset( $_POST['optionpostid'] ) ) {
+        $optionpostid = sanitize_text_field( $_POST['optionpostid'] );               
+    }   
+
+    if ( isset( $_POST['vari_id'] ) ) {
+        $vari_id = sanitize_text_field( $_POST['vari_id'] );
+        array_push($vari_arr, $vari_id);  
+        $meta_key = '_varimit__product_vari_'.$vari_id;
+
+    }
+
+    if ( isset( $_POST['vari_slug'] ) ) {
+        $vari_slug = sanitize_text_field( $_POST['vari_slug'] ); 
+        array_push( $vari_arr, $vari_slug);      
+
+    }
+
+    if ( isset( $_POST['vari_name'] ) ) {
+        $vari_name = sanitize_text_field( $_POST['vari_name'] );
+        array_push($vari_arr, $vari_name);        
+
+    }   
+  
+    update_post_meta( $optionpostid, $meta_key,  $vari_arr );    
+
+    // Извлекаем значения у данной вариации из таблицы
+    $arr_values = varimit_variation_values_display_product_all_from_db( $vari_id );
+  // print_r(json_encode($arr_values));
+   // $tram = "Good!";
+    //echo "<div>". $tram ."</div>";
+
+    //show($arr_values);
+
+    $output_start = <<<    HTML
+    <select name="select_values_$vari_id" 
+            id="select_values_$vari_id" 
+            class="selectclass" 
+            data-value_id=$vari_id>
+        <option value="notselect">-не выбран-</option>           
+    HTML;
+
+    foreach($arr_values as $values){
+        $output_content .= <<<    HTML
+         <option value=$values[slugvalue]>$values[namevalue]</option>  
+        HTML;
+    }
+    
+
+    $output_end = <<<    HTML
+    </select>
+    HTML;
+
+    $res = $output_start.$output_content.$output_end;
+
+    echo $res;
+/*
+    <select 
+    name="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
+    id="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
+    class="selectclass" 
+    data-value_id="<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>"
+  >
+
+  foreach($arr_values as $values){
+
+
+    }
+*/
+    wp_die();
+}
+
+
 ?>

@@ -27,20 +27,24 @@
     $product = wc_get_product( $wp_query->post );
     if( $product ){
       $product_id = $product->get_id();
-    }    
-   
+    }       
     
     $key_iden = '_varimit_iden'; 
     $key_main = '_varimit_main';
 
-    $meta_iden = get_post_meta( $product_id, $key_iden, true );
+    $meta_iden = get_post_meta( $product_id, $key_iden, true );  
    
+    // show($meta_iden);
 
     $res_count = varimit_get_result_compare_id($meta_iden, $key_iden, $key_main );
 
+    // show($res_count);
+
+    $no_vari = varimit_check_vari_aka_product_id($product_id);
+    // show($no_vari);
 
     $varimit_var_count = $res_count;
-    if (0!= $varimit_var_count) {
+    if ((0!= $varimit_var_count)&&($no_vari=="false")) {
       echo "<p>";
       printf( esc_html__( 'Еще варианты ', 'belmarco' ) );
       echo "<span>";
@@ -75,16 +79,20 @@ function varimit_get_result_compare_id($meta_iden, $key_iden, $key_main ){
       'meta_query' => [
         'relation' => 'AND',
         [
+          // Идентификатор
           'key' => $key_iden,
           'value' => $meta_iden,
           'compare' => '='
         ],
+        /*
         [
+          // главный товар
           'key' => $key_main,
           'value' => 1,
           'compare' => '=',
           'type'    => 'CHAR',
         ]
+        */
       ]
       
     );
@@ -94,8 +102,10 @@ function varimit_get_result_compare_id($meta_iden, $key_iden, $key_main ){
     $i=0;
     if ( $query->have_posts() ) {
       while ( $query->have_posts() ) {
-        $query->the_post();
-       $i++;
+        $query->the_post();       
+        
+          $i++;      
+      
       }
     } 
     wp_reset_postdata();
@@ -104,6 +114,33 @@ function varimit_get_result_compare_id($meta_iden, $key_iden, $key_main ){
  return $i;
 }
 
+/**
+ * Функция проверки на наличие вариации
+ *
+ */
+function varimit_check_vari_aka_product_id( $product_id ){
+  global $wpdb;
 
+  $table_name = $wpdb->prefix . 'varimit_variation_values';
+
+  $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name, ARRAY_A );
+
+  //$t_res = array();
+  //$gibrid = array();
+  foreach($results as $res ){
+   // $t_res[] = '_varimit__product_value_'.$res['id'];
+
+   $gibrid = get_post_meta( $product_id, '_varimit__product_value_'.$res['id'], false );
+   if( empty( $gibrid ) || ($gibrid[0]=='notselect') ) {
+    $marker = "true";
+      } else {
+        $marker = "false";
+        break;
+      }
+  }
+
+  return  $marker;
+
+}
 
 ?>

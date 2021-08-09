@@ -75,6 +75,9 @@ function varimit_output_variation_in_product() {
           </p>
          </div>
          <div class="varimit-table-inner-content">
+         <div class="outlister">
+
+         </div>  
            <?php
            /**
             * Получение вариации для выбора
@@ -107,13 +110,23 @@ function varimit_output_variation_in_product() {
           if( $selected_vari_id ) {
             $selected_vari_slug = varimit_variation_get_slug_from_db( $selected_vari_id );
           }
+
+        //  show($selected_vari_slug);
          
 
   ?>
                 <tr class="select-variation-list"> 
+
                   <?php // Блок выбора вариации?>             
+
                   <td class="varimit-table-inner-content-txt">
-                    <select> 
+
+                  <select 
+                      name="select_varian_<?php echo $selected_vari_id;?>" 
+                      id="select_varian_<?php echo $selected_vari_id;?>"                    
+                      data-select_varian_id="<?php echo $selected_vari_id;?>"
+                  >
+
                       <option value="notselect">-не выбран-</option>
     
                       <?php 
@@ -122,15 +135,10 @@ function varimit_output_variation_in_product() {
                       ?>
                         <option 
                           value="<?php echo esc_attr( $varimit_name_option['slugvari']  );?>"
-                          data-vari_id=<?php echo esc_attr( $varimit_name_option['id']   );?>
-
-                          <?php              
-                        if(isset($selected_vari_slug[0]['slugvari'])) {
-                          selected( $selected_vari_slug[0]['slugvari'], $varimit_name_option['slugvari']);
-                        }
-                        
-                          ?>
-                                                
+                          data-varian_id="<?php echo esc_attr( $varimit_name_option['id']   );?>"
+                          
+                          <?php selected( $selected_vari_slug[0]['slugvari'], $varimit_name_option['slugvari']); ?>
+                          
                         >
                             <?php echo esc_attr( $varimit_name_option['namevari']  );?>
                         </option>
@@ -141,8 +149,8 @@ function varimit_output_variation_in_product() {
                     </select> 
 
                   </td>
-                  <?php // Блок выбора вариации?>
-                  <td class="varimit-table-inner-content-txt">
+                  <?php // Блок выбора значения вариации ?>
+                  <td class="varimit-table-inner-content-txt" >
                     <select 
                       name="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
                       id="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 

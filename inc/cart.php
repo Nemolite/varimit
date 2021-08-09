@@ -30,62 +30,186 @@
    * Функция вывода ссылок на попап вариативных товаров
    *  
    */
-function varimit_display_variation_single_product() {
-
-    // show( varimit_get_id_product_for_hide() );
+function varimit_display_variation_single_product() {   
 
     global $wp_query;
+    // Получаем id продукта
     $product = wc_get_product( $wp_query->post );
     $id = $product->get_id(); 
+
+    // Извлекаем все мета поля данного товара в виде массива
     $key = ''; 
     $single =false; 
-
     $meta_values = get_post_meta( $id, $key, $single );
-    //show( $meta_values );
 
+
+    // Получаем идентификатор вариации
+    $iden_vari = varimit_get_iden_from_products( $id );
+
+    // Получаем массив id продуктов с данным идентификатором
+    if (isset($iden_vari)&&$iden_vari!==''){
+      $product_id_arr = varimit_get_array_id_product($iden_vari);
+    }
+
+     // Убираем сам товар из списка и переиндексируем 
+     $arr_id = array();
+     $arr_id[] = $id;                             
+     $products_id_iden_arr = array_values(array_diff( $product_id_arr, $arr_id ));
+
+    // show($products_id_iden_arr);
+/*
+     foreach($products_id_iden_arr as $id_pr){
+        $display_name = varimit_get_name_product_on_id($id_pr);
+        echo $id_pr."=".$display_name;
+        echo "<br>";
+     }
+*/
+    //show($meta_values);
+    /**
+     * Начало проверечного кусочка кода ()  _varimit__product_value 
+     */
+    
+    $sovpad_arr=array();
+$cabunker = 0;
+   foreach ($meta_values as $varimit_product_value => $varimit_product_value_meta_box){
+    if (strpos($varimit_product_value, '_varimit__product_value') !== false) {
+    //   show($varimit_product_value);      
+
+       $cabunker++;
+
+       foreach($varimit_product_value_meta_box as $values_box){
+         
+        // show(unserialize($values_box));
+         /**
+          * Ищем совпадения по значению вариации
+          * Входные параметры
+          * $varimit_product_value Имя мета поля
+          * $products_id_iden_arr - массив товаров с одинаковым идентификатором вариации 
+          * (что бы не перебирать все товары)
+          * $id - этого товара   
+          *
+          * Если зачения вариации этого товара совпадет со значением вариации остальных товаров 
+          * то вернет true
+          * если нет то false
+          * Результат записываем в двумерный массив $sovpad_arr[][]
+          */
+          $sovpad_arr[$varimit_product_value]  = varimit_check_id_in_products_iden($varimit_product_value, $products_id_iden_arr, $id ); 
+
+
+         
+       }
+     }
+   }
+
+// show($sovpad_arr);
+
+foreach($products_id_iden_arr as $velue_bert_id){
+
+    foreach ($sovpad_arr as $value_meta_boxes) {
+        foreach ($value_meta_boxes as $key_id_formated => $value_locic) {
+           if(($velue_bert_id==$key_id_formated)&&($value_locic=="true") ){
+               $alegon[$velue_bert_id]++;
+           }
+       
+         }
+      
+    }
+}
+    // show($alegon);
+     $news_pere = array();
+foreach($alegon as $k_id_modul => $lociminal){
+    if (($cabunker-1)==$lociminal){
+        $news_pere[] = $k_id_modul;
+    }
+}
+  
+
+   // show($news_pere);
+
+        foreach($sovpad_arr as $nonen => $value_wer){
+           
+            foreach( $value_wer as $key_idf => $value_idf){
+
+                foreach($news_pere as $valwes){
+
+               
+                  if( ($key_idf==$valwes)&&( $value_idf=="false") ){
+
+                   $absser[$nonen] = $valwes;
+
+                   }
+                }
+         
+            }
+        }   
+
+    /**
+     * Конец прверченого кусочкка кода
+     */ 
+    
+    // Извлекаем значение индентификатора вариации
     $varimit_iden = get_post_meta( $id, '_varimit_iden', true );
-    // show($varimit_iden);
 
+    // Находим все товары, которые имеют такой же идентификатор
     $arr_id_iden = varimit_get_product_union_iden( $varimit_iden ); 
-    // show( $arr_id_iden );
+    //show($arr_id_iden);
 
+
+
+    // С данным мета полем будем рабоать
     $etalon = '_varimit__product_value_';
 
+    // Перебираем мета поля и из них выбираем только _varimit__product_value_{id}
     foreach ($meta_values as $key => $val){
          if (str_contains( $key, $etalon)) {
 
-            $select_list = unserialize($val[0]);  
+           foreach($absser as $kesq => $vurq){
+                if ($kesq == $key) {
+                    $arr_inner_ci[] = $vurq;
+                }
+           }
+            $select_list = unserialize($val[0]);                    
 
-           // show( $select_list );          
-
+            // Извлекаем id вариации
             $var_id = $select_list[0];
+
+            // Получаем имя вариации по id
             if( !is_array($var_id) ) {
                 $name_variation = varimit_get_data_variation_cart($var_id);
-                // show( $name_variation );
             }
+
+            /**
+             * Испрользуя Функцию получения совпадающих вариации
+             * получаем массив id продуктов которые имеют вариации 
+             */  
             $arr_var_check = varimit_get_array_variation_for_product( $var_id );
-
-            // show($arr_var_check);
-
+           
+            // Отсекаем тех которые не входят в данный идентификатор вариации
             $for_post_in = array_intersect( $arr_id_iden, $arr_var_check );
 
-            // show($for_post_in);
-
-            // echo count($for_post_in);
+            /**
+             * Проверка , если только один id то вероятно это сам товар
+             * Если так , то выставляем маркер false
+             */
 
             if ( 1===count($for_post_in) ) {
-                  $marker_one = "false";
-                 
+                  $marker_one = "false";                 
             } else {
                 $marker_one = "true"; 
-
-            }
-
-            // echo  $marker_one;
+            }           
            
-            if( ('notselect'!==$select_list[1])&&("true"==$marker_one) ) {
+            /**
+             * Проверяем значение имени массива, если массив раннеее был выбран, и
+             * позже удален не пропускаем в обработку
+             * А также не пропускаем если марке false 
+             */
+            if( ('notselect'!==$select_list[1])
+                &&("true"==$marker_one)
+                &&(!empty($arr_inner_ci) )
+               ) {
             ?>
              <?php
+                // На всякий случай убираем лишние данные (мусор от разработки)
                 if( !is_array( $select_list[2]  ) ) { 
             ?>
                 <div class= "varimit-output-single-product-inner"> 
@@ -98,8 +222,7 @@ function varimit_display_variation_single_product() {
                             echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>";
                             echo "<br>";
                            
-                            echo esc_attr( $select_list[2] );
-                       
+                            echo esc_attr( $select_list[2] );                       
                        
                         ?>
                         </div> <!-- varimit-output-single-product-inner-left -->
@@ -143,58 +266,55 @@ function varimit_display_variation_single_product() {
                             </div> <!-- varimit-popup-output-close -->
                             <?php
                             
-                               // получаем совпадения вариации
+                               // Получаем совпадения вариации
                               $post_in_arr = varimit_get_array_variation_for_product( $var_id );
-                              // show($post_in_arr);
-                              // show($arr_id_iden);
-
+                              
+                              // Отсекаем тех кто не подходит по идентификатору
                               $for_post_in = array_intersect( $arr_id_iden, $post_in_arr );
-                              // show($for_post_in);
-                              // dev сортировка
-                              // show($id);
-
+                              
+                              // Убираем сам товар из списка  
                               $arr_id = array();
-                              $arr_id[] = $id;
-                              // show($arr_id);
-                              $result_post_in = array_diff( $for_post_in, $arr_id );
-                              // show($result_post_in);
+                              $arr_id[] = $id;                             
+                              $result_post_in = array_diff( $for_post_in, $arr_id );                          
+             
+
                                 $args = array(
                                 'post_type' => 'product',
-                                'numberposts' => -1,                                
-                                'include' => $result_post_in,        
+                                'numberposts' => -1,  
+                                'include' => $arr_inner_ci,
+                              //  'include' => $result_post_in,        
                                     
                                 );
                                 
                                 $posts = get_posts($args);
+                               
                                 foreach( $posts as $post ){
-                                    setup_postdata($post);
-                                                    
-                                   
+                                    setup_postdata($post);                                   
+                          
+                                    
                             ?>
-                              <?php
-                             $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );
-                             // show($arr_res);
+                            <?php
+                            // Получения данных о значении вариации
+                            $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );
+                            if ($arr_res[0][2]!==$select_list[2]){      
+                            // Получение изображения            
+                            $url_img = varimit_get_mini_img_values( $arr_res[0][0] );
+                            ?>                                    
 
-                             $url_img = varimit_get_mini_img_values( $arr_res[0][0] );
-
-                             //show($url_img);
-                               ?>
-
+                            <?php 
+                            // Ссылка на товар
+                            ?>
                             <a href="<?php echo get_permalink( $post->ID ); ?>">
 
                                 <div class="varimit-mini-list">
                                     <div class="varimit-mini-list-img">
 
                                     <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                                    <?php
-                                      
-                                      // echo get_the_post_thumbnail( $post->ID );
-                                    ?>                                                                
+                                                                                                 
                                     </div> <!-- varimit-mini-list-img -->
                                     <div class="varimit-mini-list-title">
                                     <?php
-                                        //echo $post->post_title;
-                                        //echo "<br>";                               
+                                        // Название значения вариации                                                                     
                                         echo $arr_res[0][2];
                                         echo "<br>";   
                                     ?>
@@ -202,14 +322,14 @@ function varimit_display_variation_single_product() {
                                 </div> <!-- varimit-mini-list --> 
                             </a>  
                         <?php            				
-                            		     
+                        } // if    		     
                         }	
                             wp_reset_postdata();                   
                         ?>
 
                     </div> <!-- varimit-popup-output -->
 
-
+                    <?php // Попап для мобильных ?>
                     <div class="varimit-left-output" id ="left_<?php echo esc_attr( $var_id ); ?>">
                     
                     <div class="varimit-popup-output-title"> 
@@ -251,7 +371,8 @@ function varimit_display_variation_single_product() {
 
                             $args_left = array(
                             'post_type' => 'product',                                
-                            'post__in' => $result_post_in,        
+                            'include' => $arr_inner_ci,
+                          //  'post__in' => $result_post_in,        
                                 
                             );
 
@@ -259,28 +380,23 @@ function varimit_display_variation_single_product() {
                             if( $query_mini->have_posts() ){
                                 while( $query_mini->have_posts() ){            
                                     $query_mini->the_post();
+
                                    
+                        if ($arr_res[0][2]!==$select_list[2]){          
                         ?>                           
                             <div class="col-xs-6">
                               
                             <a href="<?php echo get_permalink( $post->ID ); ?>">
                             <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                            <?php
-                            /*
-                                        if ( has_post_thumbnail()) {
-                                        the_post_thumbnail();
-                                        }
-                            */            
-                            ?> 
-                            <?php
-                                         //echo $post->post_title;
-                                        //echo "<br>";                               
-                                        echo $arr_res[0][2];
-                                        echo "<br>";                               
+                          
+                            <?php                                                                     
+                                echo $arr_res[0][2];
+                                echo "<br>";                               
                             ?>
                             </a>
                             </div>   <!-- varimit-left-output -->      
-                    <?php            				
+                    <?php 
+                        } // if           				
                         }			     
                     }	
                         wp_reset_postdata();                   

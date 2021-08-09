@@ -203,7 +203,7 @@
                          
                          
                       } 
-                  });
+               });
   
           });
           
@@ -349,6 +349,65 @@ for ( let i = 1;i<=cordiner;i++ ) {
       for ( let i = 1;i<=varimit_value_index_del;i++ ) {
           deleteselect( i );        
         
+      } 
+
+   /**
+   * Товар в админке
+   * выборка вариации из select и запись выброного id в базу данных
+   */
+     const varianselect = ( id ) => {      
+          $(`#select_varian_${id}`).on('change', function() { 
+               let optionpostid = $('#idenvar').val();               
+
+               let select_vari_slug = $(`#select_varian_${id}`).val(); 
+            
+               let select_vari_id = $(`#select_varian_${id} option[value=${select_vari_slug}]`).attr('data-varian_id');    
+          
+               $(`#select_varian_${id} option`).each(function( index, element ) {
+
+                 if ( $( element ).attr("data-varian_id")==select_vari_id ){
+                    $( element ).attr('selected','selected'); 
+                 } else {
+                    $( element ).removeAttr("selected"); 
+                 }
+           
+               });
+
+               let select_vari_name = $(`#select_varian_${id} option:selected`).text();                 
+              
+               jQuery.ajax({
+                    url: myajax.ajaxurl,
+                    type: 'POST',
+                    data: {
+                        action: 'varimit_select_vari',
+                        optionpostid: optionpostid,
+                        vari_id: select_vari_id,
+                        vari_slug: select_vari_slug,
+                        vari_name: select_vari_name,
+
+                    },success:function( request ){
+
+                         $(`#select_varian_${id}`).parent().next().html(request);     
+
+                    /*     
+                    var obj = jQuery.parseJSON( request );
+                    obj.forEach(function(item, i, arr) {
+                         console.log( i + ": " + item + " (массив:" + arr + ")" );
+                       });
+                       
+                    */   
+                    } 
+             });
+             
+          });
+          
+      }     
+      
+      const varimit_varian_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
+    
+
+      for ( let ik = 1;ik<=varimit_varian_index;ik++ ) {
+          varianselect ( ik );                
       } 
   
 
