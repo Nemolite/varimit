@@ -89,6 +89,17 @@ function show( $arr ){
 	print_r( $arr );
 	echo "</pre>";
 }
+
+/** 
+ * Helper polifil
+ */
+if (!function_exists('str_contains')) {
+    function str_contains(string $haystack, string $needle): bool
+		{
+			return '' === $needle || false !== strpos($haystack, $needle);
+		}
+}
+
 /**
  * Модуль создания подменю вариации
  */
@@ -143,4 +154,11 @@ require "inc/filter_db.php";
  * Модуль для работы с каталогом
  */
 require "inc/catalog.php";
+
+/**
+ * Модуль для работы с каталогом баз данных
+ */
+require "inc/catalog_db.php";
+
+
 ?>

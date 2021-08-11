@@ -12,40 +12,11 @@
 
  }
 
- /**
-  * Функция получения объединение товаров по 
-  * по индентификации вариации
-  */
 
- function varimit_get_product_union_iden( $iden ) {
-   $arr_iden = array();
-
-   if (isset($iden)&&$iden!==''){
-    $args = array(
-        'post_type' => 'product',
-        'meta_query' => [ [
-            'key' => '_varimit_iden',
-            'value' => $iden,
-        ] ],               
-            
-        );
-    $query = new WP_Query($args);
-        if( $query->have_posts() ){
-            while( $query->have_posts() ){            
-                $query->the_post();
-                $arr_iden[] = get_the_ID();
-            }
-        }   
-   }
-   
-
-  return $arr_iden;
- }
 
 /**
  * Функция получения совпадающих вариации
  */
-
  function varimit_get_array_variation_for_product( $var_id ) {
 
    $meta_name_key = '_varimit__product_value_'.$var_id;  
@@ -118,6 +89,8 @@ function varimit_get_iden_from_products( $product_id ){
 /**
  * Функция извлечения массива id продуктов 
  * с одинковым идентификаторм вариации
+ * 
+ * Возвращаем массив из ID товаров участвующих в вариации
  */
 function varimit_get_array_id_product( $iden_vari ){
 
@@ -215,7 +188,5 @@ function varimit_get_name_product_on_id($id_pr){
     $results_count = count($results);
 
     return $results_count;
-
 }
-
 ?>
