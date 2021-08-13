@@ -40,14 +40,30 @@ function varimit_display_variation_single_product() {
       $product_id_arr = varimit_get_array_id_product( $product_iden_vari );
     }    
 
+
+    show($product_id_arr);
+
+    /**
+     * По входным id, получаем разбросанный по 
+     * вариациям id
+     */
+    $razbros_vari = varimit_razbor_vari($product_id_arr,$meta_values,$product_id );
+
+    show($razbros_vari);
+   
+if(!empty($razbros_vari)){
+
+
     // С данным мета полем будем рабоать
     $etalon = '_varimit__product_value_';
 
+    // Находим свои вариации
     // Перебираем мета поля и из них выбираем только _varimit__product_value_{id}
     foreach ($meta_values as $key_vari => $val){
          if (str_contains( $key_vari, $etalon)) {          
 
             $select_list = unserialize($val[0]);
+      
             // Извлекаем id вариации
             /**
              * $select_list[0] - id вариации
@@ -55,11 +71,31 @@ function varimit_display_variation_single_product() {
              * $select_list[2] - name значения вариации
              */
             $var_id = $select_list[0];
+echo $var_id;
+
+$proverka = $etalon.$var_id;
+
+echo $proverka;
+
+
+foreach($razbros_vari as $vr_dbet){
+    foreach($vr_dbet as $ker_val =>$ker_id){
+        if($ker_val==$proverka){
+           
+  
+
 
             // Получаем имя вариации по id
             if( !is_array($var_id) ) {
                 $name_variation = varimit_get_data_variation_cart($var_id);
             }
+
+
+           
+            /**
+             * Проверяем ,есть ли еще товар с такой вариацией в
+             * с данным идентификатором
+             */
             $znach = array();
                 foreach($product_id_arr as $ids_iden){
                     $znach[] = get_post_meta( $ids_iden, $key_vari, false );
@@ -70,7 +106,7 @@ function varimit_display_variation_single_product() {
                 if(!empty($znach_value)){
                     $znach_res[] = $znach_value;
                 }                
-            }
+            }           
          
             $count_znach_res = count($znach_res);
            
@@ -80,6 +116,8 @@ function varimit_display_variation_single_product() {
              * 
              */
             if( ('notselect'!==$select_list[1])
+            // если найдено только одно id, значит товаров с такой вариацией
+            // больше нет и не отображаем его
                 && ($count_znach_res!=1)          
                ) {
             ?>
@@ -148,21 +186,27 @@ function varimit_display_variation_single_product() {
                               $arr_id = array();
                               $arr_id[] = $product_id;                             
                               $result_post_in = array_diff( $product_id_arr, $arr_id );
-                            
-                            show($result_post_in);
+                    
 
+show($key_vari);
+$amba = array();
+                                foreach($razbros_vari as $v_dbet){
+                                    foreach($v_dbet as $ke_val =>$ke_id){
+                                        if($ke_val==$key_vari){
+                                            $amba[] = $ke_id;
+                                        }    
+                                    }
+                                }
 
-                              /**
-                               * Динамический подсчет количества вариаций
-                               */
-                                $vari_val_count = count($result_post_in);
-                             
-                                $total_pred_arr[$key_vari] = $vari_val_count;
+if(empty($amba)){
+    $amba[] = $product_id;
+}
 
                                 $args = array(
                                 'post_type' => 'product',
                                 'numberposts' => -1,                                
-                                'include' => $result_post_in,        
+                               // 'include' => $result_post_in,        
+                               'include' => $amba,
                                     
                                 );
                                 
@@ -293,15 +337,19 @@ function varimit_display_variation_single_product() {
     $total_count = 0;
     foreach($total_pred_arr as $docount){
         $total_count += $docount;
-    }
-   
-    update_post_meta( $product_id, '_vari_val_count', $total_count );
+    } // foreach
 
-   // $count_t = get_post_meta( $product_id, '_vari_val_count', true );
 
-   // echo $count_t;
-} // function
-  
- 
+
+//}// if
+
+}  
+}
+}
+
+
+
+} //if  
+
+} // function 
 ?>
-
