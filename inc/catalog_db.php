@@ -102,4 +102,39 @@ function varimit_check_main_product($product_id, $key_main){
     
   }
 }
+
+/**
+ * Функция подсчета количества вариации
+ */
+function varimit_get_array_id_product_with_iden ( $meta_iden ){
+
+  $meta_name_key = '_varimit_iden';  
+
+  $args = array(
+    'post_type' => 'product',
+    'numberposts' => -1,                                
+    'meta_query' => [ [
+      'key' =>  $meta_name_key,
+      'value' => $meta_iden,
+      
+  ] ],                                
+      
+        
+    );
+    
+    $posts = get_posts($args);
+   $cori = 0;
+    foreach( $posts as $post ){
+        setup_postdata($post);
+        $post_id = $post->ID;
+
+        $marker = varimit_check_vari_aka_product_id( $post_id );
+
+       if($marker == "false"){
+         $cori++;
+       }
+    }
+    wp_reset_postdata(); 
+    return $cori;       
+}
 ?>

@@ -64,11 +64,11 @@
  /**
   * Вывод в карточке товара, в попап, миниатюры вариации
   */
-  function varimit_get_mini_img_values( $value_id ){
+  function varimit_get_mini_img_values( $slug ){
 
     global $wpdb;
     $table_name = $wpdb->prefix . 'varimit_variation_values';
-    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE id = ' . $value_id, ARRAY_A );
+    $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE slugvalue = "'.$slug.'"', ARRAY_A );
     
     // return $url_img;
 
@@ -233,14 +233,10 @@ $minus = array();
         } 
     }
 
-$count_et = count($res_acoc_et);
-echo $count_et;
-show($res_acoc_et);
-show($res_acoc_arr);
-
+    $count_et = count($res_acoc_et);
 
    foreach($res_acoc_arr as $arr_keys => $arr_values ){
-      show($arr_values);
+     
       if($count_et==count($arr_values)) {
         $sovpad_key = 0;
         $sovpad_znach = 0;
@@ -253,98 +249,46 @@ show($res_acoc_arr);
                     foreach($arr_values as $key_val => $val_val) {
 
                         if( $key_et==$key_val ) {
-                            echo $key_et;
-                            echo " ";
-                            echo "совпадение по ключам";
-                            echo "<br>";
+                            
                             $sovpad_key++; 
                             if($res_acoc_et[$key_et]==$arr_values[$key_val])
                             {
                                 $sovpad_znach++;
                             } else {
                                 $ne_sovpad_znach++;
-                                if ($ne_sovpad_znach>1){
-                                    echo "Слишком много не сопадений=".$ne_sovpad_znach;
-                                    echo " По id=".$arr_keys;
+                                if ($ne_sovpad_znach>1){                                    
                                     $minus[] = $arr_keys;
-                                } elseif($ne_sovpad_znach==1) {
-                                    echo "<br>";
-                                    echo "Ключ ".$key_val. " не сопадение по значению".$ne_sovpad_znach;
-                                    echo "<br>";
+                                } elseif($ne_sovpad_znach==1) {                                   
                                     unset($total_prom);
-                                    
-                                        $total_prom[$key_et] = $arr_keys;
-                                   
-                                    
-                                    echo "----";
-                                    show($total_prom);
-                                    echo "----";
+                                    $total_prom[$key_et] = $arr_keys;                         
                                 }
                                
                             }
                         } 
                     } //    
             $i++;        
-             echo "<br>";       
-             echo  $count_et-$sovpad_znach;   
-             echo "<br>";        
+                 
             if( ( !empty($total_prom ) )&&( ( $count_et-$sovpad_znach )==1 )&&($count_et!=$sovpad_znach) ) {
-                echo "<br>";
-                echo "=".$i;
-                echo "<br>";
-
-
-
+            
                 $total_parent_pro[] = $total_prom;
                 unset($total_prom);
-            }else {
-         
-            }      
+            }     
             
 
-          }
-
-          
-          echo "<br>";
-          echo "Количество совпадений по ключам=".$sovpad_key;
-          echo "<br>";
-
-          echo "<br>";
-          echo "Количество совпадений по значениям=".$sovpad_znach;
-          echo "<br>";
-          echo "ID=".$arr_keys;
-          echo "<br>";
-
-          
+          }          
       
-        } else {
-
-            echo "Данный id = ".$arr_keys." Исключени из обработки";
-            echo "<br>";
-        }
+        } 
    }
 
-    // Убираем те id у которых больше чем 1 совпадений
-
-    show($minus);
-
-   show($total_parent_pro);
-
-   $totalism = array();
-
-   $key_udalenie = array();
+    // Убираем те id у которых больше чем 1 совпадений   
+ 
     foreach($minus as $minus_id){
             foreach($total_parent_pro as $parent_pro => $parent_pro_id){
 
                     foreach($parent_pro_id as $key_value_itog => $key_value_itog_id ){
-                        echo "<br>";
-                        echo $minus_id;
-                        echo "=";
-                        echo $key_value_itog_id;
-                        echo "<br>";
-                        if($minus_id==$key_value_itog_id){
-                           
-                            echo "Есть мусорное совпадение= ".$key_value_itog_id ;
+                       
+                        if($minus_id==$key_value_itog_id){                          
+                            
                             unset($total_parent_pro[$parent_pro][$key_value_itog]);
                         } 
 
@@ -357,12 +301,19 @@ foreach($total_parent_pro as $key_prov => $znach_prov){
     if (!empty($znach_prov)){
         $total_parent_pro_new[$key_prov] = $znach_prov;
     }
-}
-
-    //show($total_parent_pro_new);
+} 
 
    return $total_parent_pro_new; 
 
 }
 
+function varimit_get_prioritet_structure($var_id, $slug){
+    global $wpdb;
+
+    $table_name_values = $wpdb->prefix . 'varimit_variation_values';
+
+    $prioritet = $wpdb->get_results( 'SELECT * FROM ' . $table_name_values . ' WHERE variationid = ' . $var_id . ' AND slugvalue= "' . $slug. '"', ARRAY_A );
+
+    return $prioritet[0]["prioritet"];
+}
 ?>

@@ -32,6 +32,9 @@
 
     // Извлекаем идентификационный номер вариации для данного товара
     $meta_iden = get_post_meta( $product_id, $key_iden, true ); 
+
+ 
+
     
     // Проверяем, главный ли товар (если 1 то главный товар)
 
@@ -42,10 +45,18 @@
 
    
     if ( $main_marker=="1" ) {
+      // Получаем массив id продуктов с данным идентификатором
+      if (isset($meta_iden)&&$meta_iden!==''){
+        $product_id_arr = varimit_get_array_id_product_with_iden( $meta_iden );
+      }
+      $counter_total = $product_id_arr-1;     
+
       echo "<p>";
       printf( esc_html__( 'Еще варианты ', 'belmarco' ) );
       echo "<span>";
-      printf( esc_html__( '+%s', 'belmarco' ),get_post_meta( $product_id, '_vari_val_count', true ) );
+    //  printf( esc_html__( '+%s', 'belmarco' ),($product_id_arr-1) );
+    printf( esc_html__( '+%s', 'belmarco' ), $counter_total );
+    
       echo "</span>";
       echo "</p>";
     }  

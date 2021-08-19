@@ -40,16 +40,11 @@ function varimit_display_variation_single_product() {
       $product_id_arr = varimit_get_array_id_product( $product_iden_vari );
     }    
 
-
-    show($product_id_arr);
-
     /**
      * По входным id, получаем разбросанный по 
      * вариациям id
      */
-    $razbros_vari = varimit_razbor_vari($product_id_arr,$meta_values,$product_id );
-
-    show($razbros_vari);
+    $razbros_vari = varimit_razbor_vari($product_id_arr,$meta_values,$product_id );   
    
 if(!empty($razbros_vari)){
 
@@ -71,27 +66,19 @@ if(!empty($razbros_vari)){
              * $select_list[2] - name значения вариации
              */
             $var_id = $select_list[0];
-echo $var_id;
 
-$proverka = $etalon.$var_id;
-
-echo $proverka;
-
-
+            $proverka = $etalon.$var_id;
+            $mak_prov = "false";
 foreach($razbros_vari as $vr_dbet){
+    
     foreach($vr_dbet as $ker_val =>$ker_id){
-        if($ker_val==$proverka){
-           
-  
-
-
+        if(($ker_val==$proverka)&&($mak_prov == "false")){
+            $mak_prov = "true";
             // Получаем имя вариации по id
             if( !is_array($var_id) ) {
                 $name_variation = varimit_get_data_variation_cart($var_id);
             }
-
-
-           
+     
             /**
              * Проверяем ,есть ли еще товар с такой вариацией в
              * с данным идентификатором
@@ -186,45 +173,73 @@ foreach($razbros_vari as $vr_dbet){
                               $arr_id = array();
                               $arr_id[] = $product_id;                             
                               $result_post_in = array_diff( $product_id_arr, $arr_id );
-                    
 
-show($key_vari);
-$amba = array();
-                                foreach($razbros_vari as $v_dbet){
-                                    foreach($v_dbet as $ke_val =>$ke_id){
+
+                                $amba = array();
+                                foreach($razbros_vari as $v_key => $v_dbet){
+
+                                    foreach($v_dbet as $ke_val => $ke_id){
                                         if($ke_val==$key_vari){
                                             $amba[] = $ke_id;
                                         }    
                                     }
                                 }
 
-if(empty($amba)){
-    $amba[] = $product_id;
-}
+                                if(empty($amba)){
+                                    $amba[] = $product_id;
+                                }                          
+
+                                // Сортировка 
+
+                                if (count($amba)>1){                          
+
+                                    $proverka = $etalon.$var_id;                               
+
+                                    $sort_slug = array();
+                                    foreach($amba as $amba_id){
+                                        $exin = get_post_meta($amba_id, $proverka, false);                                
+                                    // $exin[0][1] - slug
+
+                                    $prioritet = varimit_get_prioritet_structure($var_id, $exin[0][1]);
+
+                                        $sort_slug[$prioritet] = $amba_id;
+                                        
+                                    }                                  
+
+                                    ksort($sort_slug);
+
+                                    $sort_listing = array();
+                                    foreach($sort_slug as $sorting){
+                                        $sort_listing[] = $sorting;
+                                    }                           
+          
+                                } elseif(count($amba)==1) {
+                                    $sort_listing[] = $amba[0];
+                                }
 
                                 $args = array(
                                 'post_type' => 'product',
                                 'numberposts' => -1,                                
                                // 'include' => $result_post_in,        
-                               'include' => $amba,
+                               'include' => $sort_listing,
+                               'orderby' => 'post__in'
                                     
                                 );
                                 
                                 $posts = get_posts($args);
                                
                                 foreach( $posts as $post ){
-                                    setup_postdata($post);
-                          
+                                    setup_postdata($post);                         
                                     
                             ?>
                             <?php
-                            // Получения данных о значении вариации
-                            echo  $var_id;
-                            $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );
-                            show($arr_res);
-                            if ($arr_res[0][2]!==$select_list[2]){      
+                           
+                            // Получения данных о значении вариации                          
+                            $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );                     
+
+                            if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
                             // Получение изображения            
-                            $url_img = varimit_get_mini_img_values( $arr_res[0][0] );
+                            $url_img = varimit_get_mini_img_values( $arr_res[0][1] );
                             ?>                                    
 
                             <?php 
@@ -280,31 +295,35 @@ if(empty($amba)){
 
                         <div class="varimit_left_mini_content">                          
                         <?php
-                        /**
-                             * Проверяем значения вариации товаров с одинаковым идентификационным
-                             * номером вариации
-                             */                        
-                              
-                              // Убираем сам товар из списка  
-                              $arr_id = array();
-                              $arr_id[] = $product_id;                             
-                              $result_post_in = array_diff( $product_id_arr, $arr_id );
-
-                            $args_left = array(
-                            'post_type' => 'product',                                                            
-                            'post__in' => $result_post_in,        
+                        //show( $sort_listing);
+                          $args_left = array(
+                            'post_type' => 'product',
+                            'numberposts' => -1,                                
+                           // 'include' => $result_post_in,        
+                           'include' => $sort_listing,
+                           'orderby' => 'post__in',
+                         
                                 
                             );
+                            
+                            $posts_left = get_posts($args_left);
+                           
+                            foreach( $posts_left as $post ){
+                               // setup_postdata($post); 
 
-                            $query_mini = new WP_Query($args_left);
-                            if( $query_mini->have_posts() ){
-                                while( $query_mini->have_posts() ){            
-                                    $query_mini->the_post();
-
+                            //    echo $post->ID;
+                            //    echo "<br>";
+                        ?>                       
+                        <?php
                                    
-                        if ($arr_res[0][2]!==$select_list[2]){          
+                                    // Получения данных о значении вариации                          
+                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );                     
+        
+                                    if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
+                                    // Получение изображения            
+                                    $url_img = varimit_get_mini_img_values( $arr_res[0][1] );         
                         ?>                           
-                            <div class="col-xs-6">
+                            <div class="col-xs-6 varimit_left_inner">
                               
                             <a href="<?php echo get_permalink( $post->ID ); ?>">
                             <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
@@ -317,8 +336,9 @@ if(empty($amba)){
                             </div>   <!-- varimit-left-output -->      
                     <?php 
                         } // if           				
-                        }			     
-                    }	
+                        }	// while
+                       	     
+              
                         wp_reset_postdata();                   
                     ?>
                     </div> <!-- varimit_left_mini_content -->
@@ -339,15 +359,11 @@ if(empty($amba)){
         $total_count += $docount;
     } // foreach
 
-
-
 //}// if
-
-}  
+//break;
+} 
 }
 }
-
-
 
 } //if  
 

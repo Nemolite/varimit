@@ -68,12 +68,12 @@
                processData : false,
                contentType : false, 
                type:'POST', 
-                    success:function(request){                        
+                    success:function(request){                                          
                          alert("Значение вариации добавлена");
                          setTimeout(function() { location.reload() }, 1000);   
                                                                                                          
                     },
-                    error: function( err ) {
+                    error: function( err ) {                   
                          console.log( err );            	
                     }
           });
