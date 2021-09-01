@@ -227,12 +227,7 @@ function varimit_action_varimit_select_vari(){
     update_post_meta( $optionpostid, $meta_key,  $vari_arr );    
 
     // Извлекаем значения у данной вариации из таблицы
-    $arr_values = varimit_variation_values_display_product_all_from_db( $vari_id );
-  // print_r(json_encode($arr_values));
-   // $tram = "Good!";
-    //echo "<div>". $tram ."</div>";
-
-    //show($arr_values);
+    $arr_values = varimit_variation_values_display_product_all_from_db( $vari_id );  
 
     $output_start = <<<    HTML
     <select name="select_values_$vari_id" 
@@ -256,19 +251,7 @@ function varimit_action_varimit_select_vari(){
     $res = $output_start.$output_content.$output_end;
 
     echo $res;
-/*
-    <select 
-    name="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
-    id="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
-    class="selectclass" 
-    data-value_id="<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>"
-  >
-
-  foreach($arr_values as $values){
-
-
-    }
-*/
+    
     wp_die();
 }
 

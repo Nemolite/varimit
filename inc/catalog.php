@@ -31,18 +31,11 @@
     $key_main = '_varimit_main';
 
     // Извлекаем идентификационный номер вариации для данного товара
-    $meta_iden = get_post_meta( $product_id, $key_iden, true ); 
-
- 
-
+    $meta_iden = get_post_meta( $product_id, $key_iden, true );
     
     // Проверяем, главный ли товар (если 1 то главный товар)
 
-    $main_marker = varimit_check_main_product($product_id, $key_main);  
-     
-    // $res_count = varimit_get_result_compare_id( $meta_iden, $key_iden, $key_main);
-    // $no_vari = varimit_check_vari_aka_product_id( $product_id );    
-
+    $main_marker = varimit_check_main_product($product_id, $key_main);   
    
     if ( $main_marker=="1" ) {
       // Получаем массив id продуктов с данным идентификатором
@@ -61,7 +54,5 @@
       echo "</p>";
     }  
 
-  }
-
-  
+  }  
 ?>
