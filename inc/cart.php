@@ -274,9 +274,7 @@ foreach($razbros_vari as $vr_dbet){
                     <div class="varimit-left-output" id ="left_<?php echo esc_attr( $var_id ); ?>">
                     
                     <div class="varimit-popup-output-title"> 
-                    <?php
-                        echo "<b>".$art_title_col."</b>";
-                    ?>
+                    <?php echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>"; ?>
                     </div> <!-- varimit-popup-output-title -->
 
                         <div class="varimit-popup-output-close" data-id_close ="<?php echo esc_attr( $var_id ); ?>">
@@ -326,12 +324,13 @@ foreach($razbros_vari as $vr_dbet){
                             <div class="col-xs-6 varimit_left_inner">
                               
                             <a href="<?php echo get_permalink( $post->ID ); ?>">
-                            <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                          
+                            <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+                            <p>
                             <?php                                                                     
                                 echo $arr_res[0][2];
                                 echo "<br>";                               
                             ?>
+                            </p>
                             </a>
                             </div>   <!-- varimit-left-output -->      
                     <?php 
