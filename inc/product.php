@@ -8,9 +8,8 @@ add_action('woocommerce_product_write_panel_tabs','varimit_output_variation_in_p
 function varimit_output_variation_in_product() {
   
   global $post;
-  $idenvar = $post->ID;  
-  // $metas = get_post_meta( $idenvar,'_varimit_iden',true );  
-  // echo $metas;
+  $idenvar = $post->ID;   
+
   $check_main = get_post_meta( $idenvar,'_varimit_main',true );  
   
   if("1"==$check_main){   
@@ -70,6 +69,9 @@ function varimit_output_variation_in_product() {
           </p>
          </div>
          <div class="varimit-table-inner-content">
+         <div class="outlister">
+
+         </div>  
            <?php
            /**
             * Получение вариации для выбора
@@ -79,10 +81,12 @@ function varimit_output_variation_in_product() {
             $results_data = array();
             $varimit_variation_output_product = apply_filters( 'varimit_variation_display_product', $results_data );
            
-            $variation_name = 'namevari';
-            $variation_slug = 'slugvari';
-            $variation_id   = 'id';
-           
+            $varimit_name = 'namevari';
+            $varimit_slug = 'slugvari';
+            $varimit_id   = 'id';
+
+            $varimit_repetitions_output = ( $varimit_variation_output_product ) ? count( $varimit_variation_output_product ) : 1;
+            //show($varimit_repetitions_output);
            ?>
             <input type="hidden" 
               name="variation_count" 
@@ -98,29 +102,57 @@ function varimit_output_variation_in_product() {
                 <th class="varimit-table-inner-content-title">Значения</th>
                 <th class="varimit-table-inner-content-title">Действие</th>
               </tr>
-              <?php
-              $index = 0;
-                  foreach ($varimit_variation_output_product as $variation_output_list) {
-                   show( $variation_output_list );
 
-                   $meta_key = '_varimit_product_variation_'. $variation_output_list[ $variation_id];
-                   $arr_temp = get_post_meta( $idenvar, $meta_key, true ); 
-                   show( $arr_temp );
-                    
-              ?>        
-              <tr 
-              id="select_index_<?php echo esc_attr( $index  ); ?>" 
-              class="select-variation-list" 
+  <?php for ( $varimit_index = 0; $varimit_index <= ($varimit_repetitions_output-1); $varimit_index++ ) { 
 
-              data-jvar_index="<?php echo esc_attr( $index  ); ?>"
-              >              
+    $value_id_out = $varimit_variation_output_product[ $varimit_index ][ $varimit_id ];                         
+    $vriation_value_output_select = apply_filters( 'varimit_variation_values_display_product_all', $value_id_out );
+        
+          $selected_vari_id = $vriation_value_output_select[0]['variationid'];
+          if( $selected_vari_id ) {
+            $selected_vari_slug = varimit_variation_get_slug_from_db( $selected_vari_id );
+          }         
 
-<!-- Вариации-->
+  ?>
+                <tr class="select-variation-list"> 
+
+                  <?php // Блок выбора вариации?>             
+
                   <td class="varimit-table-inner-content-txt">
-                    <select
+
+                  <select 
+                      name="select_varian_<?php echo $selected_vari_id;?>" 
+                      id="select_varian_<?php echo $selected_vari_id;?>"                    
+                      data-select_varian_id="<?php echo $selected_vari_id;?>"
+                  >
+
+                      <option value="notselect">-не выбран-</option>
+    
+                      <?php 
                     
-                      name="select_var_<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>" 
-                      id="select_var_<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>" 
+                          foreach($varimit_variation_output_product as $varimit_name_option){
+                      ?>
+                        <option 
+                          value="<?php echo esc_attr( $varimit_name_option['slugvari']  );?>"
+                          data-varian_id="<?php echo esc_attr( $varimit_name_option['id']   );?>"
+                          
+                          <?php selected( $selected_vari_slug[0]['slugvari'], $varimit_name_option['slugvari']); ?>
+                          
+                        >
+                            <?php echo esc_attr( $varimit_name_option['namevari']  );?>
+                        </option>
+                      <?php
+                      }
+                      ?>
+
+                    </select> 
+
+                  </td>
+                  <?php // Блок выбора значения вариации ?>
+                  <td class="varimit-table-inner-content-txt" >
+                    <select 
+                      name="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
+                      id="select_values_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
                       class="selectclass" 
                       data-select_var_id="<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>"
                   
@@ -157,28 +189,25 @@ function varimit_output_variation_in_product() {
                       </option>
                     
                     </select>
-                  </td>
-<!-- end Значения Вариации-->
+                  </td> 
 
+                  <?php // Блок удаление?>
                   <td class="varimit-table-inner-content-txt">
 
                   <input 
-                    id="select_del_<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>" 
+                    id="select_del_<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>" 
                     class="del-variation-list"
-                    data-del_variation_id="<?php echo esc_attr( $variation_output_list[ $variation_id]  ); ?>"
+                    data-del_variation_id="<?php echo esc_attr( $vriation_value_output_select[0]['variationid']  );?>"
                     type="button" 
-                    value="Удалить">
+                    value="Удалить"
+                  >
 
-                  </td>
-
+                </td> 
 
                 </tr>
-               <?php
-               $index++;
-                }
-                
-               ?> 
-             
+
+              <?php } ?>
+
               <input type="hidden" 
               name="varimit_select_var_index" 
               id="varimit_select_var_index" 
@@ -193,14 +222,6 @@ function varimit_output_variation_in_product() {
             type="button" 
             value="Добавить строку для ввода вариации и его значения"
           >
-          <p></p>
-          <input 
-            id="varimit-refresh"
-            type="button" 
-            value="Подтвердить"
-            onClick="window.location.reload();"
-          >
-          
          </div>
        </div>
        

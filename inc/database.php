@@ -143,15 +143,21 @@ function varimit_action_variation_add_value(){
      
     $urlvalue = wp_get_attachment_url( $attachment_id ); 
 	$table_name_values = $wpdb->prefix . 'varimit_variation_values';
-  
+
+    // Обработка приоритетов 
+
+  $prioritet_arr = $wpdb->get_results( 'SELECT * FROM ' . $table_name_values . ' WHERE variationid = ' . $variationid, ARRAY_A );
+
+    $max_prioritet =  count($prioritet_arr);
+
     $wpdb->insert( $table_name_values, [ 
         'namevalue' => $variation_label_value, 
         'slugvalue' => $variation_name_value,
         'urlvalue' => $urlvalue,
-        'variationid' => $variationid
+        'variationid' => $variationid,
+        'prioritet' => $max_prioritet
         ] );
 
-    
     wp_die();
     
 }

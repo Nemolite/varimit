@@ -80,16 +80,24 @@ function varimit_create_plugin_tables_variation_values()
 	){$charset_collate};";
 	require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 	dbDelta( $sql );
-}
-
+} 
 /**
  * Helper
  */
-function show($arr){
+function show( $arr ){
 	echo "<pre>";
-	print_r($arr);
+	print_r( $arr );
 	echo "</pre>";
+}
 
+/** 
+ * Helper polifil
+ */
+if (!function_exists('str_contains')) {
+    function str_contains(string $haystack, string $needle): bool
+		{
+			return '' === $needle || false !== strpos($haystack, $needle);
+		}
 }
 
 /**
@@ -125,11 +133,30 @@ require "inc/product_db.php";
 /**
  * Модуль вывода вариации в карточке товра
  */
-require "inc/variation_cart.php";
+require "inc/cart.php";
 
 /**
  * Модуль работы с таблицами баз данных для страницы товара
  */
 require "inc/cart_db.php";
 
+/**
+ * Модуль для скрытия товара ,к роме выбранного главного
+ */
+require "inc/filter.php";
+
+/**
+ * Модуль работы с таблицами баз данных для фильтра
+ */
+require "inc/filter_db.php";
+
+/**
+ * Модуль для работы с каталогом
+ */
+require "inc/catalog.php";
+
+/**
+ * Модуль для работы с каталогом баз данных
+ */
+require "inc/catalog_db.php";
 ?>
