@@ -14,16 +14,17 @@
                   
                });                
          
-          let valueParentModal = jQuery(this).attr("data-id_parent");                                    
+          let valueParentModal = jQuery(this).attr("data-id_parent");                                 
           
           if (doc_w>460) {
                $(`#modal_${valueParentModal}`).show();
           }
 
           if (doc_w<460) {
-
+	       $(`#left_${valueParentModal}`).css({'marginTop':'0', 'opacity':'1', 'height': "100%"});
                $(`#left_${valueParentModal}`).show();
-               $(`#left_${valueParentModal}`).animate({marginLeft:"100%"},1000);
+               $(`#left_${valueParentModal}`).animate({marginLeft:"100%"},400);
+               $('body').css('overflow', 'hidden');
           }
          
      });
@@ -39,9 +40,27 @@
 
           if (doc_w<460) {
 
-               $(`#left_${valueCloseModal}`).animate({marginLeft:"-100%"},1000);
-               $(`#left_${valueCloseModal}`).hide();
+               $(`#left_${valueCloseModal}`).animate({marginLeft:"-100%", marginTop: "-150%", height: "0", opacity: "0"},500);
+               
+               setTimeout(function(){
+	         $(`#left_${valueCloseModal}`).hide();
+	       },300)
+               
+               $('body').css('overflow', 'unset');
           }
-     });
+     });  
+     
+     /**
+      * Сокрытие товаров в вариации
+      */
+      $(`.woof_reset_search_form`).on('click',function(){           
+          location.reload();           
+      });
+      
+
        
 } )( jQuery );
+
+let PopupOpen = document.querySelectorAll('.varimit-left-output');
+console.log(PopupOpen);
+console.log('sfdb')

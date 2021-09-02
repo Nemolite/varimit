@@ -44,19 +44,6 @@ function varimit_variation_display_from_db($results) {
 }
 
 /**
- * Получени количества вариаций
- */
-
-function varimit_variation_display_count_from_db() {
-
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'varimit_variation';
-    $count = $wpdb->get_var( 'SELECT count(*) FROM '.$table_name );
-    return $count;
-
-}
-
-/**
  * Редактирование вариации 
  */
 add_action('wp_ajax_edit_variation', 'varimit_action_edit_variation'); 
@@ -212,8 +199,6 @@ function varimit_variation_values_output_arr_from_db( $variation_id_inner ) {
     return $results;
 
 }
-
-
 
 /**
  * Извлечение значений вариации 

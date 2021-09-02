@@ -197,9 +197,6 @@ function varimit_edit_variation_value( $valueid ) {
  * Выход Имя значения вариации , ссылка, миниатюра
  */
 $vriation_value_output_one_only = apply_filters( 'varimit_variation_value_output_one_only', $valueid );
-
-
-
     ?>
   <div class="wrap woocommerce">			
   

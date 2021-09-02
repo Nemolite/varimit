@@ -45,7 +45,6 @@ function varimit_action_varimit_variation_iden_main(){
     }
     
     update_post_meta( $postid, '_varimit_main',  $main );
-
     
     wp_die();
 }
@@ -76,43 +75,6 @@ function varimit_variation_values_display_product_all_from_db( $value_id_out ) {
     $results = $wpdb->get_results( 'SELECT * FROM ' . $table_name . ' WHERE variationid = ' . $value_id_out, ARRAY_A );
     return $results;
 
-}
-
-/**
- * Добавление и изменения 
- * вариации товара
- */
-add_action('wp_ajax_varimit_select_variation', 'varimit_action_select_product_variation'); 
-function varimit_action_select_product_variation(){ 
-   
-    $main_arr = array();
-
-    if ( isset( $_POST['optionpostid'] ) ) {
-        $optionpostid = sanitize_text_field( $_POST['optionpostid'] );               
-    }
-
-    if ( isset( $_POST['var_id'] ) ) {
-        $var_id = sanitize_text_field( $_POST['var_id'] );
-        array_push($main_arr, $var_id );  
-        $meta_key = '_varimit_product_variation_'. $var_id;
-
-    }
-
-    if ( isset( $_POST['option_var_slug'] ) ) {
-        $option_var_slug = sanitize_text_field( $_POST['option_var_slug'] ); 
-        array_push($main_arr, $option_var_slug);      
-
-    }
-
-    if ( isset( $_POST['option_var_name'] ) ) {
-        $option_var_name = sanitize_text_field( $_POST['option_var_name'] );
-        array_push($main_arr, $option_var_name);        
-
-    }   
-  
-    update_post_meta( $optionpostid, $meta_key,  $main_arr );    
-    
-    wp_die();
 }
 
  /**
@@ -227,7 +189,7 @@ function varimit_action_varimit_select_vari(){
     update_post_meta( $optionpostid, $meta_key,  $vari_arr );    
 
     // Извлекаем значения у данной вариации из таблицы
-    $arr_values = varimit_variation_values_display_product_all_from_db( $vari_id );  
+    $arr_values = varimit_variation_values_display_product_all_from_db( $vari_id ); 
 
     $output_start = <<<    HTML
     <select name="select_values_$vari_id" 
@@ -251,9 +213,7 @@ function varimit_action_varimit_select_vari(){
     $res = $output_start.$output_content.$output_end;
 
     echo $res;
-    
+
     wp_die();
 }
-
-
 ?>

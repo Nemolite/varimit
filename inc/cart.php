@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /**
  * Модуль вывода вариации в карточке товра
  */
@@ -144,7 +144,7 @@ foreach($razbros_vari as $vr_dbet){
                     </div> <!-- varimit-output-single-product-inner-right -->
 
                     <div class="varimit-popup-output" id ="modal_<?php echo esc_attr( $var_id ); ?>">
-                    
+                      <div class="varimit-popup-output-wrapper">
                         <div class="varimit-popup-output-title">
                       <?php echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>"; ?>
                         </div> <!-- varimit-popup-output-title -->
@@ -162,6 +162,7 @@ foreach($razbros_vari as $vr_dbet){
                                 </path>
                             </svg> 
                             </div> <!-- varimit-popup-output-close -->
+                            <div class="varimit-popup-output-inner">
                             <?php
                             
                             /**
@@ -267,7 +268,8 @@ foreach($razbros_vari as $vr_dbet){
                         }	
                             wp_reset_postdata();                   
                         ?>
-
+                       </div>
+                       </div>
                     </div> <!-- varimit-popup-output -->
 
                     <?php // Попап для мобильных ?>
@@ -321,10 +323,12 @@ foreach($razbros_vari as $vr_dbet){
                                     // Получение изображения            
                                     $url_img = varimit_get_mini_img_values( $arr_res[0][1] );         
                         ?>                           
-                            <div class="col-xs-6 varimit_left_inner">
+                            <div class="varimit_left_inner">
                               
                             <a href="<?php echo get_permalink( $post->ID ); ?>">
-                            <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+                            <span class="varimit_left_img-wrap">
+                                <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+                            </span>
                             <p>
                             <?php                                                                     
                                 echo $arr_res[0][2];

@@ -222,9 +222,4 @@ function varimit_edit_variation() {
                
 <?php
 } 
-
-
-
-
 ?>
-

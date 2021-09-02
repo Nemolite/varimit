@@ -82,5 +82,4 @@ if ( is_admin() ) {
     </div>
   <?php
   }
-
 ?>

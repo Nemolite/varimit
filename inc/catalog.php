@@ -7,8 +7,7 @@
   * Вывод вариации в каталоге, через хук
   */
   add_action( 'woocommerce_shop_loop_item_title','varimit_display_in_category',15 ); 
-  function varimit_display_in_category() {
-     
+  function varimit_display_in_category() {   
     ?>
         <div class="varimit-output">            
             <?php  varimit_display_variation(); ?>           
@@ -31,11 +30,15 @@
     $key_main = '_varimit_main';
 
     // Извлекаем идентификационный номер вариации для данного товара
-    $meta_iden = get_post_meta( $product_id, $key_iden, true );
+    $meta_iden = get_post_meta( $product_id, $key_iden, true ); 
     
     // Проверяем, главный ли товар (если 1 то главный товар)
 
-    $main_marker = varimit_check_main_product($product_id, $key_main);   
+    $main_marker = varimit_check_main_product($product_id, $key_main);  
+     
+    // $res_count = varimit_get_result_compare_id( $meta_iden, $key_iden, $key_main);
+    // $no_vari = varimit_check_vari_aka_product_id( $product_id );    
+
    
     if ( $main_marker=="1" ) {
       // Получаем массив id продуктов с данным идентификатором
@@ -52,7 +55,7 @@
     
       echo "</span>";
       echo "</p>";
-    }  
+    }    
 
   }  
 ?>
