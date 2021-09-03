@@ -2,19 +2,23 @@
 /**
  * Модуль вывода вариации в карточке товра
  */
-
-
   /**
   * Вывод вариации в карточке товара, через хук
   */
   add_action( 'woocommerce_single_product_summary','varimit_display_in_single_product',15 ); 
-  function varimit_display_in_single_product() {
+  function varimit_display_in_single_product() { 
+    if( is_product_category() || is_product() ) {    
     ?>
         <div class="varimit-output-single-product">           
-            <?php  varimit_display_variation_single_product(); ?>
+            <?php       
+
+            varimit_display_variation_single_product();                                           
+                    
+            ?>
         </div>
        
     <?php
+    }
   } 
 
 /**
@@ -294,25 +298,18 @@ foreach($razbros_vari as $vr_dbet){
                         </div> <!-- varimit-popup-output-close -->
 
                         <div class="varimit_left_mini_content">                          
-                        <?php
-                        //show( $sort_listing);
+                        <?php                       
                           $args_left = array(
                             'post_type' => 'product',
-                            'numberposts' => -1,                                
-                           // 'include' => $result_post_in,        
+                            'numberposts' => -1,                                                                
                            'include' => $sort_listing,
-                           'orderby' => 'post__in',
-                         
+                           'orderby' => 'post__in',                        
                                 
                             );
                             
                             $posts_left = get_posts($args_left);
                            
-                            foreach( $posts_left as $post ){
-                               // setup_postdata($post); 
-
-                            //    echo $post->ID;
-                            //    echo "<br>";
+                            foreach( $posts_left as $post ){                        
                         ?>                       
                         <?php
                                    
@@ -355,12 +352,7 @@ foreach($razbros_vari as $vr_dbet){
             }
                    
         }
-    } // foreach
-
-    $total_count = 0;
-    foreach($total_pred_arr as $docount){
-        $total_count += $docount;
-    } // foreach
+    } // foreach 
 
 //}// if
 //break;

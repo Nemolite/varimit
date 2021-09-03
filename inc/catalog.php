@@ -6,21 +6,24 @@
    /**
   * Вывод вариации в каталоге, через хук
   */
+
   add_action( 'woocommerce_shop_loop_item_title','varimit_display_in_category',15 ); 
   function varimit_display_in_category() {   
-    ?>
-        <div class="varimit-output">            
-            <?php  varimit_display_variation(); ?>           
-        </div>
-    <?php
+      ?>
+          <div class="varimit-output">                      
+              <?php  varimit_display_variation(); ?>           
+          </div>
+      <?php
   } 
+
 
    /**
    * Функция вывода количества вариации в каталоге для каждого товара
    */
 
   function varimit_display_variation() {
-    global $wp_query;
+    global $wp_query;  
+
     $product = wc_get_product( $wp_query->post );
     if( $product ){
       $product_id = $product->get_id();

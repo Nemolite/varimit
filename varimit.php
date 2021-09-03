@@ -133,6 +133,7 @@ require "inc/product_db.php";
 /**
  * Модуль вывода вариации в карточке товра
  */
+
 require "inc/cart.php";
 
 /**
