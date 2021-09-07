@@ -73,9 +73,9 @@ if(!empty($razbros_vari)){
 
             $proverka = $etalon.$var_id;
             $mak_prov = "false";
-foreach($razbros_vari as $vr_dbet){
+    foreach($razbros_vari as $vr_dbet){
     
-    foreach($vr_dbet as $ker_val =>$ker_id){
+      foreach($vr_dbet as $ker_val =>$ker_id){
         if(($ker_val==$proverka)&&($mak_prov == "false")){
             $mak_prov = "true";
             // Получаем имя вариации по id
@@ -112,10 +112,10 @@ foreach($razbros_vari as $vr_dbet){
                 && ($count_znach_res!=1)          
                ) {
             ?>
-             <?php
+                <?php
                 // На всякий случай убираем лишние данные (мусор от разработки)
                 if( !is_array( $select_list[2]  ) ) { 
-            ?>
+                ?>
                 <div class= "varimit-output-single-product-inner"> 
                
                         <div class= "varimit-output-single-product-inner-left"       
@@ -209,7 +209,7 @@ foreach($razbros_vari as $vr_dbet){
 
                                         $sort_slug[$prioritet] = $amba_id;
                                         
-                                    }                                  
+                                    }  //  foreach  $amba                             
 
                                     ksort($sort_slug);
 
@@ -220,56 +220,56 @@ foreach($razbros_vari as $vr_dbet){
           
                                 } elseif(count($amba)==1) {
                                     $sort_listing[] = $amba[0];
-                                }
+                                } // if $amba
 
                                 $args = array(
-                                'post_type' => 'product',
-                                'numberposts' => -1,                                
-                               // 'include' => $result_post_in,        
+                                'post_type' => 'product',                                    
                                'include' => $sort_listing,
-                               'orderby' => 'post__in'
+                               'orderby' => 'post__in',
+                               'suppress_filters' => 'false',
+                               'posts_per_page' => -1,
                                     
                                 );
                                 
-                                $posts = get_posts($args);
+                            $posts = get_posts($args);
                                
-                                foreach( $posts as $post ){
+                            foreach( $posts as $post ){
                                     setup_postdata($post);                         
                                     
-                            ?>
-                            <?php
+                                ?>
+                                <?php
                            
-                            // Получения данных о значении вариации                          
-                            $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );                     
+                                    // Получения данных о значении вариации                          
+                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );                     
 
-                            if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
-                            // Получение изображения            
-                            $url_img = varimit_get_mini_img_values( $arr_res[0][1] );
-                            ?>                                    
+                                if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
+                                    // Получение изображения            
+                                        $url_img = varimit_get_mini_img_values( $arr_res[0][1] );
+                                        ?>                                    
 
-                            <?php 
-                            // Ссылка на товар
-                            ?>
-                            <a href="<?php echo get_permalink( $post->ID ); ?>">
+                                        <?php 
+                                        // Ссылка на товар
+                                        ?>
+                                        <a href="<?php echo get_permalink( $post->ID ); ?>">
 
-                                <div class="varimit-mini-list">
-                                    <div class="varimit-mini-list-img">
+                                            <div class="varimit-mini-list">
+                                                <div class="varimit-mini-list-img">
 
-                                    <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                                                                                                 
-                                    </div> <!-- varimit-mini-list-img -->
-                                    <div class="varimit-mini-list-title">
-                                    <?php
-                                        // Название значения вариации                                                                     
-                                        echo $arr_res[0][2];
-                                        echo "<br>";   
-                                    ?>
-                                    </div> <!-- varimit-mini-list-title -->
-                                </div> <!-- varimit-mini-list --> 
-                            </a>  
-                        <?php            				
-                        } // if    		     
-                        }	
+                                                <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+                                                                                                            
+                                                </div> <!-- varimit-mini-list-img -->
+                                                <div class="varimit-mini-list-title">
+                                                <?php
+                                                    // Название значения вариации                                                                     
+                                                    echo $arr_res[0][2];
+                                                    echo "<br>";   
+                                                ?>
+                                                </div> <!-- varimit-mini-list-title -->
+                                            </div> <!-- varimit-mini-list --> 
+                                        </a>  
+                                    <?php            				
+                                } // if    		     
+                            }	// foreach $post
                             wp_reset_postdata();                   
                         ?>
                        </div>
@@ -300,44 +300,45 @@ foreach($razbros_vari as $vr_dbet){
                         <div class="varimit_left_mini_content">                          
                         <?php                       
                           $args_left = array(
-                            'post_type' => 'product',
-                            'numberposts' => -1,                                                                
+                            'post_type' => 'product',                                                                                         
                            'include' => $sort_listing,
-                           'orderby' => 'post__in',                        
+                           'orderby' => 'post__in',
+                           'suppress_filters' => 'false', 
+                           'posts_per_page' => -1,                       
                                 
                             );
                             
                             $posts_left = get_posts($args_left);
                            
-                            foreach( $posts_left as $post ){                        
-                        ?>                       
-                        <?php
+                            foreach( $posts_left as $post_mini ){ 
+                                setup_postdata($post_mini);                        
+                                    ?>                       
+                                    <?php
                                    
                                     // Получения данных о значении вариации                          
-                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );                     
+                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post_mini->ID  );                     
         
-                                    if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
+                                if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
                                     // Получение изображения            
                                     $url_img = varimit_get_mini_img_values( $arr_res[0][1] );         
-                        ?>                           
-                            <div class="varimit_left_inner">
-                              
-                            <a href="<?php echo get_permalink( $post->ID ); ?>">
-                            <span class="varimit_left_img-wrap">
-                                <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                            </span>
-                            <p>
-                            <?php                                                                     
-                                echo $arr_res[0][2];
-                                echo "<br>";                               
-                            ?>
-                            </p>
-                            </a>
-                            </div>   <!-- varimit-left-output -->      
-                    <?php 
-                        } // if           				
-                        }	// while
-                       	     
+                                    ?>                           
+                                    <div class="varimit_left_inner">
+                                    
+                                    <a href="<?php echo get_permalink( $post_mini->ID ); ?>">
+                                    <span class="varimit_left_img-wrap">
+                                        <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+                                    </span>
+                                    <p>
+                                    <?php                                                                     
+                                        echo $arr_res[0][2];
+                                        echo "<br>";                               
+                                    ?>
+                                    </p>
+                                    </a>
+                                    </div>   <!-- varimit-left-output -->      
+                                <?php 
+                                } // if           				
+                            }	// foreach $post_mini                    
               
                         wp_reset_postdata();                   
                     ?>
@@ -346,21 +347,19 @@ foreach($razbros_vari as $vr_dbet){
         
               </div> <!-- varimit-output-single-product-inner -->
               <?php
-                }
+                } // if $select_list[2] 
             ?>  
             <?php
-            }
+            } // 'notselect'!==$select_list[1]
                    
-        }
-    } // foreach 
+        } // if ($ker_val==$proverka)&&($mak_prov == "false")
+      } // foreach  $vr_dbet as $ker_val =>$ker_id
 
-//}// if
-//break;
-} 
-}
-}
+    } // foreach($razbros_vari as $vr_dbet){
+  } //  if (str_contains( $key_vari, $etalon))
+} // foreach ($meta_values as $key_vari => $val){
 
-} //if  
+} //if(!empty($razbros_vari)){
 
 } // function 
 ?>

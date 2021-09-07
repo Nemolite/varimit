@@ -53,9 +53,16 @@
      /**
       * Сокрытие товаров в вариации
       */
+     
       $(`.woof_reset_search_form`).on('click',function(){           
-          location.reload();           
+          
+          baseUrl = window.location.href.split("?")[0];
+          location.reload();
+          window.history.pushState('name', '', baseUrl);
+          console.log(baseUrl);           
+         
       });
+      
       
 
        

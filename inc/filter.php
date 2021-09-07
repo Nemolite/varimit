@@ -11,7 +11,8 @@ function hide_from_query( $query ) {
 		// и основной цикл страницы
  
 		if ( is_product_category()
-        || is_shop() ) {
+        || is_shop()       
+       ) {
 			// страница архива рубрик
 			
 			$query->set( 'posts_per_page', -1 );
