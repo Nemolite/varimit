@@ -170,57 +170,16 @@ if(!empty($razbros_vari)){
                             <?php
                             
                             /**
-                             * Проверяем значения вариации товаров с одинаковым идентификационным
+                             * Проверяем значения вариации товаров 
+                             * с одинаковым идентификационным
                              * номером вариации
-                             */                        
-                              
-                              // Убираем сам товар из списка  
-                              $arr_id = array();
-                              $arr_id[] = $product_id;                             
-                              $result_post_in = array_diff( $product_id_arr, $arr_id );
+                             */                       
+                             
+                            $amba = varimit_delete_self_product($product_id_arr,$product_id,$razbros_vari,$key_vari);                       
 
+                            // Сортировка 
 
-                                $amba = array();
-                                foreach($razbros_vari as $v_key => $v_dbet){
-
-                                    foreach($v_dbet as $ke_val => $ke_id){
-                                        if($ke_val==$key_vari){
-                                            $amba[] = $ke_id;
-                                        }    
-                                    }
-                                }
-
-                                if(empty($amba)){
-                                    $amba[] = $product_id;
-                                }                          
-
-                                // Сортировка 
-
-                                if (count($amba)>1){                          
-
-                                    $proverka = $etalon.$var_id;                               
-
-                                    $sort_slug = array();
-                                    foreach($amba as $amba_id){
-                                        $exin = get_post_meta($amba_id, $proverka, false);                                
-                                    // $exin[0][1] - slug
-
-                                    $prioritet = varimit_get_prioritet_structure($var_id, $exin[0][1]);
-
-                                        $sort_slug[$prioritet] = $amba_id;
-                                        
-                                    }  //  foreach  $amba                             
-
-                                    ksort($sort_slug);
-
-                                    $sort_listing = array();
-                                    foreach($sort_slug as $sorting){
-                                        $sort_listing[] = $sorting;
-                                    }                           
-          
-                                } elseif(count($amba)==1) {
-                                    $sort_listing[] = $amba[0];
-                                } // if $amba
+                            $sort_listing = varimit_sort_ids_for_query($var_id,$amba);
 
                                 $args = array(
                                 'post_type' => 'product',                                    
@@ -362,4 +321,67 @@ if(!empty($razbros_vari)){
 } //if(!empty($razbros_vari)){
 
 } // function 
+
+/**
+ * Модуль сортировки
+ */
+function varimit_sort_ids_for_query($var_id,$amba){
+    if (count($amba)>1){   
+
+        $etalon = '_varimit__product_value_';
+
+        $proverka = $etalon.$var_id;                               
+
+        $sort_slug = array();
+        foreach($amba as $amba_id){
+            $exin = get_post_meta($amba_id, $proverka, false);                                
+        // $exin[0][1] - slug
+
+        $prioritet = varimit_get_prioritet_structure($var_id, $exin[0][1]);
+
+            $sort_slug[$prioritet] = $amba_id;
+            
+        }  //  foreach  $amba                             
+
+        ksort($sort_slug);
+
+        $sort_listing = array();
+        foreach($sort_slug as $sorting){
+            $sort_listing[] = $sorting;
+        }                           
+
+    } elseif(count($amba)==1) {
+        $sort_listing[] = $amba[0];
+    } // if $amba
+
+    return $sort_listing;
+}
+
+/**
+                             * Проверяем значения вариации товаров 
+                             * с одинаковым идентификационным
+                             * номером вариации
+                             */
+function varimit_delete_self_product($product_id_arr,$product_id,$razbros_vari,$key_vari){
+      // Убираем сам товар из списка  
+      $arr_id = array();
+      $arr_id[] = $product_id;                             
+      $result_post_in = array_diff( $product_id_arr, $arr_id );
+
+
+        $amba = array();
+        foreach($razbros_vari as $v_key => $v_dbet){
+
+            foreach($v_dbet as $ke_val => $ke_id){
+                if($ke_val==$key_vari){
+                    $amba[] = $ke_id;
+                }    
+            }
+        }
+
+        if(empty($amba)){
+            $amba[] = $product_id;
+        }
+    return $amba;     
+}
 ?>
