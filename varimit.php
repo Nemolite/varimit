@@ -16,10 +16,12 @@ defined('ABSPATH') || exit;
  */
 
 function script_and_style_varimit(){
-  wp_enqueue_style( 'varimit-style',  plugins_url('assets/css/style.css', __FILE__));
-  wp_enqueue_script( 'varimit-script', plugins_url('assets/js/varimit.js', __FILE__),array(),'1.0.0','in_footer');
-}
-add_action( 'wp_enqueue_scripts', 'script_and_style_varimit' );
+	wp_enqueue_style( 'varimit-style',  plugins_url('assets/css/style.css', __FILE__));
+	wp_enqueue_script( 'varimit-script', plugins_url('assets/js/varimit.js', __FILE__),array(),'1.0.0','in_footer');
+  
+	wp_localize_script( 'varimit-script', 'varimitajax', array( 'varimitajaxurl' => admin_url( 'admin-ajax.php' ) ) );
+  }
+  add_action( 'wp_enqueue_scripts', 'script_and_style_varimit' );
 
 /**
  * Подключение скриптов и стилей для админки

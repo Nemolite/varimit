@@ -57,9 +57,11 @@
       $(`.woof_reset_search_form`).on('click',function(){           
           
           baseUrl = window.location.href.split("?")[0];
+          submit_link=baseUrl+"?swoof=2";
+          history.pushState({}, "?", submit_link);
+
           location.reload();
-          window.history.pushState('name', '', baseUrl);
-          console.log(baseUrl);           
+          history.pushState({}, "?", baseUrl );                 
          
       });
       

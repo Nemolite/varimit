@@ -10,8 +10,7 @@ function hide_from_query( $query ) {
 		// не админка
 		// и основной цикл страницы
  
-		if ( is_product_category()
-        || is_shop()       
+		if ( (is_product_category() || is_shop() )&&( $_GET["swoof"]!=1||$_GET["swoof"]==2  )             
        ) {
 			// страница архива рубрик
 			

@@ -131,21 +131,7 @@ if(!empty($razbros_vari)){
                         ?>
                         </div> <!-- varimit-output-single-product-inner-left -->
                
-                    <div class= "varimit-output-single-product-inner-right">
-
-                    <svg 
-                        focusable="false" 
-                        viewBox="0 0 24 24" 
-                        class="range-revamp-svg-icon range-revamp-chunky-header__icon" 
-                        aria-hidden="true">
-                        <path 
-                        fill-rule="evenodd" 
-                        clip-rule="evenodd" 
-                        d="M15.6 12l-5.785 5.786L8.4 16.372l4.371-4.371-4.37-4.372 1.414-1.414L15.6 12z">
-                        </path>
-                    </svg> 
-
-                    </div> <!-- varimit-output-single-product-inner-right -->
+                        <?php varimit_svg_right(); ?>
 
                     <div class="varimit-popup-output" id ="modal_<?php echo esc_attr( $var_id ); ?>">
                       <div class="varimit-popup-output-wrapper">
@@ -153,19 +139,8 @@ if(!empty($razbros_vari)){
                       <?php echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>"; ?>
                         </div> <!-- varimit-popup-output-title -->
 
-                            <div class="varimit-popup-output-close" data-id_close ="<?php echo esc_attr( $var_id ); ?>">
-                            <svg 
-                                focusable="false" 
-                                viewBox="0 0 24 24" 
-                                class="range-revamp-svg-icon range-revamp-btn__icon" 
-                                aria-hidden="true">
-                                <path 
-                                fill-rule="evenodd" 
-                                clip-rule="evenodd" 
-                                d="M12 13.415l4.95 4.95 1.414-1.415-4.95-4.95 4.95-4.95-1.415-1.413-4.95 4.95-4.949-4.95L5.636 7.05l4.95 4.95-4.95 4.95 1.414 1.414 4.95-4.95z">
-                                </path>
-                            </svg> 
-                            </div> <!-- varimit-popup-output-close -->
+                            <?php varimit_display_svg_desktop($var_id ); ?>
+
                             <div class="varimit-popup-output-inner">
                             <?php
                             
@@ -181,54 +156,35 @@ if(!empty($razbros_vari)){
 
                             $sort_listing = varimit_sort_ids_for_query($var_id,$amba);
 
-                                $args = array(
-                                'post_type' => 'product',                                    
-                               'include' => $sort_listing,
-                               'orderby' => 'post__in',
-                               'suppress_filters' => 'false',
-                               'posts_per_page' => -1,
+                               $args = array(
+                               'post_type' => 'product',                                    
+                               'post__in' => $sort_listing,
+                               'orderby' => 'post__in',                               
+                               'posts_per_page' => 50,
                                     
                                 );
-                                
+                            /*    
                             $posts = get_posts($args);
                                
                             foreach( $posts as $post ){
-                                    setup_postdata($post);                         
-                                    
-                                ?>
-                                <?php
-                           
+                                    setup_postdata($post); 
+                            */ 
+                            $query = new WP_Query( $args );
+
+                            if ( $query->have_posts() ) {
+                                while ( $query->have_posts() ) {
+                                    $query->the_post();
+                                    $post_desk_id = get_the_ID(); 
                                     // Получения данных о значении вариации                          
-                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post->ID  );                     
+                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post_desk_id );                                     
+                                   
+                                ?>
+                                
+                               <?php varimit_display_product_desktop($arr_res,$select_list, $post_desk_id); ?>
+                                <?php  		     
+                                }	// while
+                            }	// if
 
-                                if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
-                                    // Получение изображения            
-                                        $url_img = varimit_get_mini_img_values( $arr_res[0][1] );
-                                        ?>                                    
-
-                                        <?php 
-                                        // Ссылка на товар
-                                        ?>
-                                        <a href="<?php echo get_permalink( $post->ID ); ?>">
-
-                                            <div class="varimit-mini-list">
-                                                <div class="varimit-mini-list-img">
-
-                                                <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                                                                                                            
-                                                </div> <!-- varimit-mini-list-img -->
-                                                <div class="varimit-mini-list-title">
-                                                <?php
-                                                    // Название значения вариации                                                                     
-                                                    echo $arr_res[0][2];
-                                                    echo "<br>";   
-                                                ?>
-                                                </div> <!-- varimit-mini-list-title -->
-                                            </div> <!-- varimit-mini-list --> 
-                                        </a>  
-                                    <?php            				
-                                } // if    		     
-                            }	// foreach $post
                             wp_reset_postdata();                   
                         ?>
                        </div>
@@ -242,63 +198,32 @@ if(!empty($razbros_vari)){
                     <?php echo "<b>". esc_attr( $name_variation[0]['namevari'] ) ."</b>"; ?>
                     </div> <!-- varimit-popup-output-title -->
 
-                        <div class="varimit-popup-output-close" data-id_close ="<?php echo esc_attr( $var_id ); ?>">
-                        <svg 
-                            focusable="false" 
-                            viewBox="0 0 24 24" 
-                            class="range-revamp-svg-icon range-revamp-btn__icon" 
-                            aria-hidden="true">
-                            <path 
-                            fill-rule="evenodd" 
-                            clip-rule="evenodd" 
-                            d="M12 13.415l4.95 4.95 1.414-1.415-4.95-4.95 4.95-4.95-1.415-1.413-4.95 4.95-4.949-4.95L5.636 7.05l4.95 4.95-4.95 4.95 1.414 1.414 4.95-4.95z">
-                            </path>
-                        </svg> 
-                        </div> <!-- varimit-popup-output-close -->
+                        <?php varimit_display_svg_mini($var_id); ?> 
 
                         <div class="varimit_left_mini_content">                          
                         <?php                       
                           $args_left = array(
-                            'post_type' => 'product',                                                                                         
-                           'include' => $sort_listing,
-                           'orderby' => 'post__in',
-                           'suppress_filters' => 'false', 
-                           'posts_per_page' => -1,                       
+                           'post_type' => 'product',                                                                                         
+                           'post__in' => $sort_listing,
+                           'orderby' => 'post__in',                           
+                           'posts_per_page' => 50,                       
                                 
-                            );
-                            
-                            $posts_left = get_posts($args_left);
-                           
-                            foreach( $posts_left as $post_mini ){ 
-                                setup_postdata($post_mini);                        
-                                    ?>                       
-                                    <?php
-                                   
-                                    // Получения данных о значении вариации                          
-                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post_mini->ID  );                     
-        
-                                if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
-                                    // Получение изображения            
-                                    $url_img = varimit_get_mini_img_values( $arr_res[0][1] );         
-                                    ?>                           
-                                    <div class="varimit_left_inner">
-                                    
-                                    <a href="<?php echo get_permalink( $post_mini->ID ); ?>">
-                                    <span class="varimit_left_img-wrap">
-                                        <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
-                                    </span>
-                                    <p>
-                                    <?php                                                                     
-                                        echo $arr_res[0][2];
-                                        echo "<br>";                               
-                                    ?>
-                                    </p>
-                                    </a>
-                                    </div>   <!-- varimit-left-output -->      
-                                <?php 
-                                } // if           				
-                            }	// foreach $post_mini                    
-              
+                            );                          
+                     
+                            $query_left = new WP_Query( $args_left );
+
+                            if ( $query_left->have_posts() ) {
+                                while ( $query_left->have_posts() ) {
+                                    $query_left->the_post();
+                                    // Получения данных о значении вариации  
+                                    $post_mini_id = get_the_ID();                        
+                                    $arr_res =  varimit_get_mini_name_values(  $var_id, $post_mini_id  );                     
+                                ?>                            
+                            <?php varimit_display_product_mini($arr_res,$select_list, $post_mini_id ) ?>
+
+                                <?php          				
+                                }	// while                    
+                            } //
                         wp_reset_postdata();                   
                     ?>
                     </div> <!-- varimit_left_mini_content -->
@@ -358,10 +283,10 @@ function varimit_sort_ids_for_query($var_id,$amba){
 }
 
 /**
-                             * Проверяем значения вариации товаров 
-                             * с одинаковым идентификационным
-                             * номером вариации
-                             */
+* Проверяем значения вариации товаров 
+* с одинаковым идентификационным
+* номером вариации
+*/
 function varimit_delete_self_product($product_id_arr,$product_id,$razbros_vari,$key_vari){
       // Убираем сам товар из списка  
       $arr_id = array();
@@ -384,4 +309,136 @@ function varimit_delete_self_product($product_id_arr,$product_id,$razbros_vari,$
         }
     return $amba;     
 }
+
+/**
+ * SVG desktop
+ */
+
+ function varimit_display_svg_desktop($var_id ){
+     ?>
+    <div class="varimit-popup-output-close" data-id_close ="<?php echo esc_attr( $var_id ); ?>">
+    <svg 
+        focusable="false" 
+        viewBox="0 0 24 24" 
+        class="range-revamp-svg-icon range-revamp-btn__icon" 
+        aria-hidden="true">
+        <path 
+        fill-rule="evenodd" 
+        clip-rule="evenodd" 
+        d="M12 13.415l4.95 4.95 1.414-1.415-4.95-4.95 4.95-4.95-1.415-1.413-4.95 4.95-4.949-4.95L5.636 7.05l4.95 4.95-4.95 4.95 1.414 1.414 4.95-4.95z">
+        </path>
+    </svg> 
+    </div> <!-- varimit-popup-output-close -->
+   <?php 
+ }
+
+/**
+*   SVG mini
+*/
+
+function varimit_display_svg_mini($var_id){
+    ?>
+    <div class="varimit-popup-output-close" data-id_close ="<?php echo esc_attr( $var_id ); ?>">
+                        <svg 
+                            focusable="false" 
+                            viewBox="0 0 24 24" 
+                            class="range-revamp-svg-icon range-revamp-btn__icon" 
+                            aria-hidden="true">
+                            <path 
+                            fill-rule="evenodd" 
+                            clip-rule="evenodd" 
+                            d="M12 13.415l4.95 4.95 1.414-1.415-4.95-4.95 4.95-4.95-1.415-1.413-4.95 4.95-4.949-4.95L5.636 7.05l4.95 4.95-4.95 4.95 1.414 1.414 4.95-4.95z">
+                            </path>
+                        </svg> 
+                        </div> <!-- varimit-popup-output-close -->
+    <?php                    
+}
+
+/**
+ * Отображение вариации в мобильной версии
+ */
+
+ function varimit_display_product_mini($arr_res,$select_list, $post_mini_id ){
+    
+    if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
+        // Получение изображения            
+        $url_img = varimit_get_mini_img_values( $arr_res[0][1] );         
+        ?>                           
+        <div class="varimit_left_inner">
+        
+            <a href="<?php echo get_permalink( $post_mini_id ); ?>">
+            <span class="varimit_left_img-wrap">
+                <img id="mimi_url_list_left" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+            </span>
+            <p>
+            <?php                                                                     
+                echo $arr_res[0][2];
+                echo "<br>";                               
+            ?>
+            </p>
+            </a>
+        </div>   <!-- varimit-left-output -->      
+    <?php 
+        } // if 
+ }
+
+ /**
+  *   Отображение вариации в десктоп
+  */
+
+  function varimit_display_product_desktop($arr_res,$select_list, $post_desk_id){
+   
+    if ( ($arr_res[0][2]!==$select_list[2])&&(!empty($arr_res) ) ){      
+        // Получение изображения            
+            $url_img = varimit_get_mini_img_values( $arr_res[0][1] );
+            ?>                                    
+
+            <?php 
+            // Ссылка на товар
+            ?>
+            <a href="<?php echo get_permalink( $post_desk_id ); ?>">
+
+                <div class="varimit-mini-list">
+                    <div class="varimit-mini-list-img">
+
+                    <img id="mimi_url_list" src="<?php echo $url_img[0]['urlvalue'];?>" alt="">
+                                                                                
+                    </div> <!-- varimit-mini-list-img -->
+                    <div class="varimit-mini-list-title">
+                    <?php
+                        // Название значения вариации                                                                     
+                        echo $arr_res[0][2];
+                        echo "<br>";   
+                    ?>
+                    </div> <!-- varimit-mini-list-title -->
+                </div> <!-- varimit-mini-list --> 
+            </a>  
+        <?php            				
+    } // if  
+   
+  }
+
+  /**
+   * SVG right
+   */
+
+function varimit_svg_right(){
+    ?>
+    <div class= "varimit-output-single-product-inner-right">
+
+    <svg 
+        focusable="false" 
+        viewBox="0 0 24 24" 
+        class="range-revamp-svg-icon range-revamp-chunky-header__icon" 
+        aria-hidden="true">
+        <path 
+        fill-rule="evenodd" 
+        clip-rule="evenodd" 
+        d="M15.6 12l-5.785 5.786L8.4 16.372l4.371-4.371-4.37-4.372 1.414-1.414L15.6 12z">
+        </path>
+    </svg> 
+
+    </div> <!-- varimit-output-single-product-inner-right -->
+    <?php
+}   
 ?>
