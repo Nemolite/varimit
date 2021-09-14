@@ -6,39 +6,42 @@
   * Вывод вариации в карточке товара, через хук
   */
   add_action( 'woocommerce_single_product_summary','varimit_display_in_single_product',15 ); 
-  function varimit_display_in_single_product() { 
-    if( is_product_category() || is_product() ) {    
-    ?>
-        <div class="varimit-output-single-product">           
-            <?php       
+  function varimit_display_in_single_product() {
+    global $wp_query;        
+    $product_id = $wp_query->post->ID;  
+    $post_in_arr = get_option('post_in_arr'); 
 
-            varimit_display_variation_single_product();                                           
-                    
-            ?>
-        </div>
-       
-    <?php
-    }
+    if (in_array($product_id, $post_in_arr)) {
+        if( is_product_category() || is_product() ) {    
+        ?>
+            <div class="varimit-output-single-product">           
+                <?php       
+
+                varimit_display_variation_single_product($product_id);                                           
+                /**
+                 * Функция отображения вариации в карточке товара
+                 */
+                // varimit_display_list_variation_in_cart();        
+                ?>
+            </div>
+        
+        <?php
+        }
+    }    
   } 
 
 /**
 * Функция вывода ссылок на попап вариативных товаров
 *  
 */
-function varimit_display_variation_single_product() {   
-    global $wp_query;
-    
-    $product = wc_get_product( $wp_query->post );
-    $product_id = $product->get_id(); 
+function varimit_display_variation_single_product($product_id) {             
 
-    // Извлекаем все мета поля данного товара в виде массива
-    $key = ''; 
-    $single =false; 
-    $meta_values = get_post_meta( $product_id, $key, $single );
+    // Извлекаем все мета поля данного товара в виде массива   
+    $meta_values = get_post_meta( $product_id, '', false );
 
     // Получаем идентификатор вариации
-    $product_iden_vari = varimit_get_iden_from_products( $product_id );
-
+    $product_iden_vari = get_post_meta( $product_id, '_varimit_iden', false ); 
+   
     // Получаем массив id продуктов с данным идентификатором
     if (isset($product_iden_vari)&&$product_iden_vari!==''){
       $product_id_arr = varimit_get_array_id_product( $product_iden_vari );

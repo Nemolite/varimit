@@ -71,16 +71,6 @@
     return $results;
   }
 
-/**
- * Функция получения идентификатора продукта
- */
-function varimit_get_iden_from_products( $product_id ){
-    $key_iden = '_varimit_iden';   
-
-        $product_iden = get_post_meta( $product_id, $key_iden, false ); 
-
-    return $product_iden;
-}
 
 /**
  * Функция извлечения массива id продуктов 

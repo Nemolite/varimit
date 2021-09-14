@@ -157,4 +157,14 @@ require "inc/catalog.php";
  * Модуль для работы с каталогом баз данных
  */
 require "inc/catalog_db.php";
+
+/**
+ * Функция отображения вариации в карточке товара
+ */
+require "inc/cart_func.php";
+
+/**
+ * Модуль основных функции
+ */
+require "inc/global.php";
 ?>
