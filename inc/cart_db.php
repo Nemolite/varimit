@@ -78,14 +78,16 @@
  * 
  * Возвращаем массив из ID товаров участвующих в вариации
  */
-function varimit_get_array_id_product( $iden_vari ){
+function varimit_get_array_id_product( $iden_vari, $post_in_arr ){
 
     $meta_name_key = '_varimit_iden';  
 
     $product_id_arr= array();
     
     $args = array(
-       'post_type' => 'product',        
+       'post_type' => 'product', 
+       'posts_per_page' => -1,
+       'post__in' => $post_in_arr,        
        'meta_query' => [ [
           'key' =>  $meta_name_key,
           'value' => $iden_vari

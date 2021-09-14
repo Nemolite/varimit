@@ -17,34 +17,33 @@
             <div class="varimit-output-single-product">           
                 <?php       
 
-                varimit_display_variation_single_product($product_id);                                           
+                varimit_display_variation_single_product($product_id, $post_in_arr);                                           
                 /**
                  * Функция отображения вариации в карточке товара
                  */
                 // varimit_display_list_variation_in_cart();        
                 ?>
-            </div>
-        
+            </div>        
         <?php
-        }
-    }    
-  } 
+        } //is_product_category() || is_product()
+    } // in_array   
+  } // function
 
 /**
 * Функция вывода ссылок на попап вариативных товаров
 *  
 */
-function varimit_display_variation_single_product($product_id) {             
+function varimit_display_variation_single_product($product_id,$post_in_arr) {             
 
     // Извлекаем все мета поля данного товара в виде массива   
     $meta_values = get_post_meta( $product_id, '', false );
 
-    // Получаем идентификатор вариации
+    // Получаем идентификатор вариации товара
     $product_iden_vari = get_post_meta( $product_id, '_varimit_iden', false ); 
    
     // Получаем массив id продуктов с данным идентификатором
     if (isset($product_iden_vari)&&$product_iden_vari!==''){
-      $product_id_arr = varimit_get_array_id_product( $product_iden_vari );
+      $product_id_arr = varimit_get_array_id_product( $product_iden_vari, $post_in_arr );
     }    
 
     /**
@@ -54,7 +53,6 @@ function varimit_display_variation_single_product($product_id) {
     $razbros_vari = varimit_razbor_vari($product_id_arr,$meta_values,$product_id );   
    
 if(!empty($razbros_vari)){
-
 
     // С данным мета полем будем рабоать
     $etalon = '_varimit__product_value_';
@@ -241,7 +239,8 @@ if(!empty($razbros_vari)){
 } // foreach ($meta_values as $key_vari => $val){
 
 } //if(!empty($razbros_vari)){
-
+ 
+return;
 } // function 
 
 /**
