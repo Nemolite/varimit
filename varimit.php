@@ -8,13 +8,11 @@
 * Author URI: http://vandraren.ru/
 * License: GPL2
 */
-
 defined('ABSPATH') || exit;
 
 /**
  * Подключение скриптов и стилей
  */
-
 function script_and_style_varimit(){
 	wp_enqueue_style( 'varimit-style',  plugins_url('assets/css/style.css', __FILE__));
 	wp_enqueue_script( 'varimit-script', plugins_url('assets/js/varimit.js', __FILE__),array(),'1.0.0','in_footer');
@@ -26,7 +24,6 @@ function script_and_style_varimit(){
 /**
  * Подключение скриптов и стилей для админки
  */
-
 function script_and_style_varimit_admin(){
 	
 	wp_enqueue_style( 'varimit-adminjqui',  plugins_url('assets/css/jquery-ui.min.css', __FILE__));
@@ -41,8 +38,7 @@ function script_and_style_varimit_admin(){
 
 /**
  * Создание таблицы вариации при активации плагина
- */  
-
+ */
 register_activation_hook( __FILE__, 'varimit_create_plugin_tables_variation' );
 function varimit_create_plugin_tables_variation()
 {
@@ -62,8 +58,7 @@ function varimit_create_plugin_tables_variation()
 
 /**
  * Создание таблицы значений вариации при активации плагина
- */  
-
+ */
 register_activation_hook( __FILE__, 'varimit_create_plugin_tables_variation_values' );
 function varimit_create_plugin_tables_variation_values()
 {
