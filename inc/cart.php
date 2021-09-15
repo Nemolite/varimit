@@ -5,7 +5,7 @@
   /**
   * Вывод вариации в карточке товара, через хук
   */
-  add_action( 'woocommerce_single_product_summary','varimit_display_in_single_product',15 ); 
+  add_action( 'woocommerce_single_product_summary','varimit_display_in_single_product',12 ); 
   function varimit_display_in_single_product() {
     global $wp_query;        
     $product_id = $wp_query->post->ID;  
@@ -175,7 +175,7 @@ if(!empty($razbros_vari)){
                                    
                                 ?>
                                 
-                               <?php varimit_display_product_desktop($arr_res,$select_list, $post_desk_id); ?>
+                               <?php  varimit_display_product_desktop($arr_res,$select_list, $post_desk_id); ?>
                                 <?php  		     
                                 }	// while
                             }	// if
@@ -240,7 +240,7 @@ if(!empty($razbros_vari)){
 
 } //if(!empty($razbros_vari)){
  
-return;
+
 } // function 
 
 /**

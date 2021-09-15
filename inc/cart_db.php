@@ -144,26 +144,6 @@ function varimit_get_array_id_product( $iden_vari, $post_in_arr ){
 
  }
 
-function varimit_get_name_product_on_id($id_pr){
-    $args = array(
-        'post_type' => 'product',        
-        'p' => $id_pr                          
-             
-            
-        );
- 
-        $query = new WP_Query($args);
-        if( $query->have_posts() ){
-            while( $query->have_posts() ){            
-                    $query->the_post();
-                    $title = get_the_title();                
-            }
-        } 
-     wp_reset_postdata();                 
- 
-   return $title;
- }
-
  /**
   * Извлечение количества вариации
   */

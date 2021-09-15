@@ -191,29 +191,26 @@ function varimit_action_varimit_select_vari(){
     // Извлекаем значения у данной вариации из таблицы
     $arr_values = varimit_variation_values_display_product_all_from_db( $vari_id ); 
 
-    $output_start = <<<    HTML
-    <select name="select_values_$vari_id" 
-            id="select_values_$vari_id" 
-            class="selectclass" 
-            data-value_id=$vari_id>
-        <option value="notselect">-не выбран-</option>           
-    HTML;
+$output_start = <<<    HTML
+<select name="select_values_$vari_id" 
+id="select_values_$vari_id" 
+class="selectclass" 
+data-value_id=$vari_id>
+<option value="notselect">-не выбран-</option>
+HTML;
 
-    foreach($arr_values as $values){
-        $output_content .= <<<    HTML
-         <option value=$values[slugvalue]>$values[namevalue]</option>  
-        HTML;
-    }
-    
+foreach($arr_values as $values){
+$output_content .= <<<    HTML
+<option value=$values[slugvalue]>$values[namevalue]</option>
+HTML;
+}    
 
-    $output_end = <<<    HTML
-    </select>
-    HTML;
+$output_end = <<<    HTML
+</select>
+HTML;
 
     $res = $output_start.$output_content.$output_end;
-
-    echo $res;
-
+    echo $res;    
     wp_die();
-}
+ }
 ?>

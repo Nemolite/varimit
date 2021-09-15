@@ -3,7 +3,7 @@
 * Plugin Name: Var imit
 * Plugin URI: https://github.com/Nemolite/varimit
 * Description: Имитация вариации.Формирует апселлы для каждой вариации 
-* Version: 1.0.0
+* Version: 1.11.27
 * Author: Nemolite
 * Author URI: http://vandraren.ru/
 * License: GPL2

@@ -17,22 +17,22 @@ function hide_from_query( $query ) {
 			$query->set( 'posts_per_page', -1 );
             $query->set('post_type','product' );        
             $query->set( 'meta_query', 
-                [ 
-                 
-                    'relation' => 'OR',
-                    
-                [
-                    'key' =>  '_varimit_main', 
-                    'value' => 1,                 
-                ],
+                    [               
+                        
+                        'relation' => 'OR',                
+                        
+                        [
+                            'key' =>  '_varimit_main', 
+                            'value' => 1,                 
+                        ],
+                        
+                        [
+                            'key' =>  '_varimit_iden',              
+                            'compare' => 'NOT EXISTS',                 
+                        ],    
                 
-                [
-                    'key' =>  '_varimit_iden',              
-                    'compare' => 'NOT EXISTS',                 
-                ],    
-        
-            
-            ],                   
+                    
+                    ]                   
                 );
 		} // if category
 
