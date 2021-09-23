@@ -1,4 +1,10 @@
-﻿.varimit-output {
+﻿/*
+*  The styles for a plugin Variation Imitation for Woocommerce
+* (front)
+*
+*  Author: Nemolite
+*/
+.varimit-output {
   width: 100%;
   height: auto;
 }
@@ -13,7 +19,7 @@
 }
 
 .product .varimit-output p {
-  color: #92BF2B;
+  color: #92bf2b;
   text-align: center;
   margin-left: 0;
   padding-right: 0;
@@ -84,7 +90,7 @@
   position: fixed;
   right: 0;
   top: 0;
-  background-color: rgba(0, 0, 0, .3);
+  background-color: rgba(0, 0, 0, 0.3);
   z-index: 99999999;
   display: none;
 }
@@ -112,8 +118,9 @@
   display: block;
 }
 
-.varimit-popup-output-inner a:hover .varimit-mini-list-img, .varimit-popup-output-inner a:active .varimit-mini-list-img {
-  border: 1px solid #92BF2B;
+.varimit-popup-output-inner a:hover .varimit-mini-list-img,
+.varimit-popup-output-inner a:active .varimit-mini-list-img {
+  border: 1px solid #92bf2b;
 }
 
 .varimit-popup-output-title {
@@ -148,7 +155,7 @@
 
 .varimit-mini-list-img {
   border: 1px solid transparent;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   height: 110px;
   overflow: hidden;
   display: flex;
@@ -272,7 +279,7 @@
     right: -7px;
   }
   .varimit-output-single-product-inner-left {
-     padding-left: 0;
+    padding-left: 0;
   }
   .varimit-left-output {
     padding: 40px 13px 13px;
@@ -282,7 +289,7 @@
     line-height: 25px;
     margin-bottom: 24px;
   }
- .varimit-popup-output-close {
+  .varimit-popup-output-close {
     top: 18px;
     right: 1px;
   }
@@ -301,8 +308,9 @@
     margin-bottom: 12px;
   }
 
-  .varimit_left_inner:hover .varimit_left_img-wrap, .varimit_left_inner:active .varimit_left_img-wrap {
-    border: 1px solid #92BF2B;
+  .varimit_left_inner:hover .varimit_left_img-wrap,
+  .varimit_left_inner:active .varimit_left_img-wrap {
+    border: 1px solid #92bf2b;
   }
 
   .varimit_left_inner p {
@@ -324,15 +332,12 @@
     height: 100%;
     margin-bottom: 0;
   }
-  
 }
 @media (min-width: 768px) and (max-width: 991px) {
   /* стили для sm-устройств */
-
 }
 @media (min-width: 991px) and (max-width: 1199px) {
   /* стили для md-устройств */
-  
 }
 @media (min-width: 1200px) {
   /* стили для lg-устройств */
@@ -342,7 +347,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    background-color: rgba(0, 0, 0, .3);
+    background-color: rgba(0, 0, 0, 0.3);
   }
   .varimit-popup-output-wrapper {
     width: 440px;

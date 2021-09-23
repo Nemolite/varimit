@@ -1,9 +1,14 @@
+/*
+*  The sripts for a plugin Variation Imitation for Woocommerce
+*  (front)
+*
+*  Author: Nemolite
+*/
 ( function( $ ) {
 
      /**
       * Модальное окно в карточке товара
-      */
-    
+      */    
      $(`.varimit-output-single-product-inner-left`).on('click', function() { 
           doc_w = $(document).width();         
          
@@ -52,8 +57,7 @@
      
      /**
       * Сокрытие товаров в вариации
-      */
-     
+      */     
       $(`.woof_reset_search_form`).on('click',function(){           
           
           baseUrl = window.location.href.split("?")[0];
@@ -63,13 +67,7 @@
           location.reload();
           history.pushState({}, "?", baseUrl );                 
          
-      });
-      
-      
-
+      });          
        
 } )( jQuery );
-
 let PopupOpen = document.querySelectorAll('.varimit-left-output');
-console.log(PopupOpen);
-console.log('sfdb')

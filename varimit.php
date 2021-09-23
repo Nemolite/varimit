@@ -38,7 +38,7 @@ if(is_woocommerce_active()) {
 				$this->load_plugin_textdomain();
 
 				require_once( VARIMIT_INCLUDES_URL . 'class-varimit.php' );
-				VARIMIT::instance();
+				Varimit::instance();
 			}			
 		}
 	}

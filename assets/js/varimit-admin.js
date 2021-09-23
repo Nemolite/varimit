@@ -1,3 +1,9 @@
+/*
+*  The sripts for a plugin Variation Imitation for Woocommerce
+*  (admin)
+*
+*  Author: Nemolite
+*/
 ( function( $ ) {
      /**
       * Добавление вариацию в таблицы базы данных
@@ -9,17 +15,17 @@
          let getDateForm = new FormData(variation_form);
          getDateForm.append("action", "add_new_variation"); 
          
-         $.ajax({
-              url:myajax.ajaxurl, 
-              data:getDateForm,
-              processData : false,
-              contentType : false,              
-              type:'POST', 
-              success:function(request){                
-               alert("Вариация успешно создано");    
-               setTimeout(function() { location.reload() }, 1000);
-                                                 
-          },           
+          $.ajax({
+               url:myajax.ajaxurl, 
+               data:getDateForm,
+               processData : false,
+               contentType : false,              
+               type:'POST', 
+               success:function(request){                
+                    alert("Вариация успешно создано");    
+                    setTimeout(function() { location.reload() }, 1000);
+                                                  
+               },           
   
           });
      });
@@ -41,8 +47,7 @@
                type:'POST',  
                success:function(request){                                                            
                     alert("Вариация успешно обновлена");
-                    setTimeout(function() { location.reload() }, 1000);  
-                                                               
+                    setTimeout(function() { location.reload() }, 1000);                                                                 
                },
               
           });
@@ -51,8 +56,7 @@
  /**
  * Добавление значения вариации
  *
- */
-            
+ */          
  
      $('#variation_file_value').on('change', function(){ 
     
@@ -72,22 +76,16 @@
                          alert("Значение вариации добавлена");
                          setTimeout(function() { location.reload() }, 1000);   
                                                                                                          
-                    },
-                    error: function( err ) {                   
-                         console.log( err );            	
                     }
           });
-
        });
      });
 
      /**
       * Изменения значения вариации      
-      * 
-      * 
-      */           
- 
-  $('#variation_value_img').on('change', function(){ 
+      *        
+      */          
+   $('#variation_value_img').on('change', function(){ 
     
      file = this.files;
      $('#save_variation_value').on('click',{param1: file}, function(event){         
@@ -104,14 +102,9 @@
 
                success:function(request){
                     alert("Значение вариации изменено"); 
-                    setTimeout(function() { location.reload() }, 1000); 
-                                                                                                    
-               },
-               error: function( err ) {
-                    console.log( err );            	
+                    setTimeout(function() { location.reload() }, 1000);                                                                                                     
                }
           });
-
      });
   }); 
 
@@ -133,18 +126,12 @@
           $.ajax({
                url:myajax.ajaxurl, 
                data:idenData,                       
-               type:'POST',  
-               success:function(request){ 
-                         
-                                                            
-               }
-               
+               type:'POST',                
           
           });
-     });
-     
+     });     
 
-     /**
+  /**
    * Товар в админке
    * выставление главного товара 
    */
@@ -168,16 +155,12 @@
           $.ajax({
                url:myajax.ajaxurl, 
                data:mainData,                       
-               type:'POST',  
-               success:function(request){                       
-                                                            
-               }
-               
-          
+               type:'POST',             
+                         
           });
      });
 
-       /**
+   /**
    * Товар в админке
    * выборка из select
    */
@@ -198,23 +181,15 @@
                           value_id: valueID,
                           option_slug: optionValueSlug,
                           option_name: optionValueName,
-
-                      },success:function( request ){
-                         
-                         
-                      } 
-               });
-  
-          });
-          
+                      }
+               });  
+          });          
       }     
       
-      const varimit_value_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
+     const varimit_value_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
     
-
-      for ( let i = 1;i<=varimit_value_index;i++ ) {
-          valueselect( i );        
-        
+     for ( let i = 1;i<=varimit_value_index;i++ ) {
+          valueselect( i );                
       } 
 
       /**
@@ -236,9 +211,6 @@
                         action: 'variation_values_sort',
                         positions: positions,
                         variationid: variationid                     
-
-                    },success:function( request ){                       
-                      
                     } 
                 });
           }
@@ -247,12 +219,10 @@
 /**
  * Удаление значения вариации
  * 
- */
-  
+ */  
      $(`.delete-value`).on('click', function() { 
-          let variationid = $('.varimit-values-content').attr("data-variationid");
-         
-          let valueDelID = jQuery(this).attr("data-value_del_id");                                    
+          let variationid = $('.varimit-values-content').attr("data-variationid");         
+          let valueDelID = jQuery(this).attr("data-value_del_id");                               
                      
          jQuery.ajax({
                  url: myajax.ajaxurl,
@@ -299,24 +269,14 @@ for ( let i = 1;i<=cordiner;i++ ) {
                $(element).show();
                return false; 
           }  
-   
-          /*
-          let variationCount = $(`#variation_count`).attr(`data-variation_count`);       
-        
-          if ((index+1)==variationCount) {
-             $(`#select-add-list`).hide();  
-          }
-          */
-     });
-       
+     });       
 });
 
 /**
  * Товар в адпминке
  * Удаление строки вариации и его значения
  */
-
-       const deleteselect = ( id ) => {      
+     const deleteselect = ( id ) => {      
           $(`#select_del_${id}`).on('click', function() { 
                let optionpostid = $('#idenvar').val();
                
@@ -338,17 +298,14 @@ for ( let i = 1;i<=cordiner;i++ ) {
                                   	
                     } 
                   });
-  
           });
           
       }     
       
-      const varimit_value_index_del = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
-  
+      const varimit_value_index_del = jQuery("input[name='varimit_value_index']").attr("data-index_full");      
 
       for ( let i = 1;i<=varimit_value_index_del;i++ ) {
-          deleteselect( i );        
-        
+          deleteselect( i );          
       } 
 
    /**
@@ -387,15 +344,7 @@ for ( let i = 1;i<=cordiner;i++ ) {
 
                     },success:function( request ){
 
-                         $(`#select_varian_${id}`).parent().next().html(request);     
-
-                    /*     
-                    var obj = jQuery.parseJSON( request );
-                    obj.forEach(function(item, i, arr) {
-                         console.log( i + ": " + item + " (массив:" + arr + ")" );
-                       });
-                       
-                    */   
+                         $(`#select_varian_${id}`).parent().next().html(request);       
                     } 
              });
              
@@ -405,11 +354,8 @@ for ( let i = 1;i<=cordiner;i++ ) {
       
       const varimit_varian_index = jQuery("input[name='varimit_value_index']").attr("data-index_full");    
     
-
       for ( let ik = 1;ik<=varimit_varian_index;ik++ ) {
           varianselect ( ik );                
       } 
-  
-
 
 } )( jQuery );
