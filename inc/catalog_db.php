@@ -15,7 +15,6 @@
 
     $results_data = $wpdb->get_results( 'SELECT * FROM ' . $table_name, ARRAY_A );
     return $results_data;
-
 }
 
 /**
@@ -117,7 +116,7 @@ function varimit_get_array_id_product_with_iden ( $meta_iden ){
       'key' =>  $meta_name_key,
       'value' => $meta_iden,
       
-  ] ],                                
+  ] ],                           
       
         
     );

@@ -6,10 +6,8 @@
  /**
  * Форма настроки значений вариации
  */
-function varimit_add_variation_value( $variationid, $namevari ) {
-   
+function varimit_add_variation_value( $variationid, $namevari ) {   
     ?>
-
     <h1>Добавление значений вариации <?php echo esc_html( $namevari ); ?></h1>
 
     <?php echo '<div id="message" class="updated"><p>'         
@@ -79,12 +77,7 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                                     <?php esc_html_e( 'Edit', 'woocommerce' ); ?>
                                 </a> | 
                             </span>
-                            <span class="delete">
-                                <!--
-                                <a class="delete-value" href="<?php // echo esc_url( wp_nonce_url( add_query_arg( 'delete-value', $varimit_temp_list[ $varimit_value_id ], 'edit.php?post_type=product&amp;page=variation&amp;varimit_action=delete-value' ), 'woocommerce-delete-attribute_' . $tax->attribute_id ) ); ?>">
-                                    <?php // esc_html_e( 'Delete', 'woocommerce' ); ?>
-                                </a>
-                                -->
+                            <span class="delete">                             
                                 <a href="" 
                                     class="delete-value"
                                     data-value_del_id="<?php echo esc_html( $varimit_temp_list[ $varimit_value_id ] ); ?>"
@@ -94,9 +87,6 @@ function varimit_add_variation_value( $variationid, $namevari ) {
                                 </a>
                             </span>
                           </div>
-
-
-
                         </div>
                         <div class="varimit-values-content-item-slug">
                             <p class="varimit-values-head-txt">
@@ -293,8 +283,6 @@ $vriation_value_output_one_only = apply_filters( 'varimit_variation_value_output
                     </p>
 					<?php // wp_nonce_field( 'woocommerce-save-attribute_' . $edit ); ?>
 				</form>
-
-
   </div>    
     <?php
 }

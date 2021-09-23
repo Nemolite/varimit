@@ -17,11 +17,7 @@
             <div class="varimit-output-single-product">           
                 <?php       
 
-                varimit_display_variation_single_product($product_id, $post_in_arr);                                           
-                /**
-                 * Функция отображения вариации в карточке товара
-                 */
-                // varimit_display_list_variation_in_cart();        
+                varimit_display_variation_single_product($product_id, $post_in_arr);                                                             
                 ?>
             </div>        
         <?php

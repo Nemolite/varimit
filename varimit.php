@@ -3,7 +3,7 @@
 * Plugin Name: Var imit
 * Plugin URI: https://github.com/Nemolite/varimit
 * Description: Имитация вариации.Формирует апселлы для каждой вариации 
-* Version: 1.11.27
+* Version: 1.12.2
 * Author: Nemolite
 * Author URI: http://vandraren.ru/
 * License: GPL2
@@ -157,11 +157,6 @@ require "inc/catalog.php";
  * Модуль для работы с каталогом баз данных
  */
 require "inc/catalog_db.php";
-
-/**
- * Функция отображения вариации в карточке товара
- */
-require "inc/cart_func.php";
 
 /**
  * Модуль основных функции
